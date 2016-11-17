@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:layout_marginTop="10dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cbcbcb" />
+
+    <TextView
+        android:padding="15dp"
+        android:gravity="center"
+        android:id="@+id/tvModelName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="Models"
+        android:textStyle="bold"
+        android:textColor="#484843"
+        android:background="#FFF9F9F9"
+        android:textSize="20sp"/>
+    <View
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cbcbcb" />
+
+    <TableLayout
+        android:id="@+id/modelRecords"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TableRow
+            android:weightSum="5"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+            <TextView
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="Scan"
+                android:textStyle="bold"
+                android:textColor="#484843"
+                android:textSize="20sp"/>
+            <TextView
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="Scan Result"
+                android:textStyle="bold"
+                android:textColor="#484843"
+                android:textSize="20sp"/>
+            <TextView
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="Confidence"
+                android:textStyle="bold"
+                android:textColor="#484843"
+                android:textSize="20sp"/>
+        </TableRow>
+        <TableRow>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#cbcbcb" />
+        </TableRow>
+    </TableLayout>
+
+    <View
+        android:layout_marginTop="10dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cbcbcb" />
+
+    <TextView
+        android:padding="15dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="Results"
+        android:textStyle="bold"
+        android:textColor="#484843"
+        android:background="#FFF9F9F9"
+        android:textSize="20sp"/>
+    <View
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cbcbcb" />
+
+    <TableLayout
+        android:padding="10dp"
+        android:id="@+id/modelResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </TableLayout>
+
+
+
+</LinearLayout>

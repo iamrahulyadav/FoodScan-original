@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/startNewTestContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="#f0b130"
+        android:gravity="center_vertical">
+        <ImageView
+            android:id="@+id/ivScanIcon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/graphic_radar_black"/>
+
+        <LinearLayout
+
+            android:layout_toRightOf="@+id/ivScanIcon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start a new test"
+                android:textColor="#fff"
+                android:textSize="30sp"/>
+            <View
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#cb9528"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start New Test"
+                android:textSize="16sp"
+                android:textColor="#fff"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Start New Test"-->
+    <!--style="@style/TextAppearance.AppCompat.Headline"-->
+    <!--android:textColor="@color/white"/>-->
+    <ScrollView
+        android:layout_below="@+id/startNewTestContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/PortionHeading"
+                android:text="My Tests" />
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#bfbfb4" />
+            <FrameLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+                <com.ph7.analyserforscio.views.ShadowedButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/RedButtonStyle"/>
+                <LinearLayout
+                    android:id="@+id/myTestActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3"
+                    android:padding="5dp"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/notAnalysedListView"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="?android:attr/selectableItemBackground"
+                        >
+                        <TextView
+                            android:id="@+id/tvNotAnalysedTestCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="14"
+                            android:textStyle="bold"
+                            android:textSize="26sp"
+                            android:layout_gravity="center"
+                            android:textColor="#FFF"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Not Analysed"
+                            android:textSize="14sp"
+                            android:layout_gravity="center"
+                            android:textColor="#FFF"/>
+                    </LinearLayout>
+                    <View
+                        android:id="@+id/analyzedSeparator"
+                        android:layout_width="3dp"
+                        android:background="#a44547"
+                        android:layout_height="80dp" />
+                    <LinearLayout
+                        android:id="@+id/analysedListView"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="?android:attr/selectableItemBackground"
+                        >
+                        <TextView
+                            android:id="@+id/tvAnalysedTestCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="14"
+                            android:textStyle="bold"
+                            android:textSize="26sp"
+                            android:layout_gravity="center"
+                            android:textColor="#FFF"/>
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Analysed"
+                            android:textSize="14sp"
+                            android:layout_gravity="center"
+                            android:textColor="#FFF"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="3dp"
+                        android:background="#a44547"
+                        android:layout_height="80dp" />
+
+                    <LinearLayout
+                        android:id="@+id/skuProductListView"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                       android:layout_gravity="center_vertical"
+                        android:background="?android:attr/selectableItemBackground"
+                        >
+                        <TextView
+                            android:id="@+id/tvScanCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10000"
+                            android:textStyle="bold"
+                            android:textSize="26sp"
+                            android:layout_gravity="center"
+                            android:textColor="#FFF"/>
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scan Credit"
+                            android:textSize="14sp"
+                            android:layout_gravity="center"
+                            android:textColor="#FFF"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </FrameLayout>
+
+
+            <TextView
+               style="@style/PortionHeading"
+                android:text="Connected Scanner" />
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#bfbfb4" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ph7.analyserforscio.views.ShadowedButton
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    style="@style/SkyButtonStyle"/>
+
+                <RelativeLayout
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_vertical"
+                    >
+                    <ImageView
+                        android:id="@+id/ibBluetoothGraphic"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="50dp"
+
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/graphic_bluetooth"/>
+                    <ImageView
+                        android:id="@+id/ivBluetoothStatus"
+                        android:layout_margin="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+
+                    <!--<ImageView-->
+                    <!--android:id="@+id/ivBatteryStatus"-->
+                    <!--android:layout_toStartOf="@+id/ivBluetoothStatus"-->
+
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:src="@drawable/graphic_battery_status_green"-->
+                    <!--/>-->
+                    <com.ph7.analyserforscio.views.BatteryView
+                        android:id="@+id/ivBatteryStatus"
+                        android:layout_toStartOf="@+id/ivBluetoothStatus"
+                        android:layout_centerVertical="true"
+                        android:layout_width="38dp"
+                        android:layout_height="24dp" />
+
+                    <TextView
+                        android:layout_toStartOf="@+id/ivBatteryStatus"
+                        android:textSize="16dp"
+                        android:textColor="#fff"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:layout_toEndOf="@+id/ibBluetoothGraphic"
+                        android:id="@+id/tvDeviceName"
+                        android:layout_width="match_parent"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Device Name"/>
+                </RelativeLayout>
+
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/buttonCalibrateCont"
+               >
+                <com.ph7.analyserforscio.views.ShadowedButton
+                    android:id="@+id/calibrateButtonBG"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    style="@style/PurpleButtonStyle"/>
+
+                <RelativeLayout
+                    android:id="@+id/buttonRecalibrate"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_vertical"
+                    >
+                    <ImageView
+                        android:id="@+id/ivCalibrateGraphic"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="50dp"
+                        android:scaleType="centerCrop"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <TextView
+                        android:textSize="16dp"
+                        android:textColor="#fff"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="10dp"
+                        android:layout_toEndOf="@+id/ivCalibrateGraphic"
+                        android:id="@+id/tvCalibrationStatus"
+                        android:layout_width="match_parent"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Recalibrate"/>
+
+                    <ProgressBar
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/progressBar"
+                        android:visibility="gone"
+                        android:layout_alignBottom="@+id/tvCalibrationStatus"
+                        android:layout_alignParentEnd="true" />
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/networkConnectCont"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.ph7.analyserforscio.views.ShadowedButton
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    style="@style/GreyButtonStyle"/>
+                <RelativeLayout
+                    android:id="@+id/buttonNetworkConnect"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_vertical">
+                    <ImageView
+                        android:id="@+id/ivNWOperator"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/network_operator_icn"/>
+                    <ImageView
+                        android:id="@+id/ivWifiSignal"
+                        android:layout_toEndOf="@+id/ivNWOperator"
+                        android:layout_margin="10dp"
+                        android:layout_width="29dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/wifi_signal_icn"/>
+
+                    <ImageView
+                        android:id="@+id/ivNWConnectivityStatus"
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="10dp"
+
+                        />
+                    <TextView
+                        android:id="@+id/tvNWConnectivityStatus"
+                        android:layout_toStartOf="@+id/ivNWConnectivityStatus"
+                        android:textSize="16dp"
+                        android:textColor="#fff"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:layout_toEndOf="@+id/ivWifiSignal"
+                        android:layout_width="match_parent"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Reconnect"/>
+
+
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!--<Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        />-->
+
+
+</RelativeLayout>

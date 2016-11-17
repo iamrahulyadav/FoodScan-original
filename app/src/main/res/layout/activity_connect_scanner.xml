@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/foodScanLogo"
+            android:src="@drawable/dashboard_logo"
+            android:layout_marginTop="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.ph7.analyserforscio.views.ShadowedButton
+            android:id="@+id/connectScanner"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/foodScanLogo"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Connect a Scanner"
+            android:drawablePadding="20dp"
+            android:drawableStart="@drawable/icon_bluetooth_button"
+            style="@style/BlueButtonStyle"
+            android:layout_centerHorizontal="true"
+            android:onClick="onConnectScannerClicked"
+            />
+
+        <LinearLayout
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/connectScanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvCountFoundDevices"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="0"
+                android:visibility="gone"
+                android:textColor="#484843"/>
+
+        </LinearLayout>
+
+
+
+
+        <com.ph7.analyserforscio.views.ShadowedButton
+            android:id="@+id/skipAndLogIn"
+            android:layout_marginBottom="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Skip and log in"
+            style="@style/GreenButtonStyle"
+            android:onClick="onSkipClicked"
+            />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

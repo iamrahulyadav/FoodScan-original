@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/device_status_bar"/>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/scanAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <TextView
+                android:paddingLeft="5dp"
+                android:paddingStart="5dp"
+                android:textColor="#000"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="*Test name" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/etTestName"
+                    android:backgroundTint="#dadada"
+                    android:hint="Test name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp" />
+                <ImageView
+                    android:id="@+id/ivClearTestName"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/clear"/>
+            </FrameLayout>
+
+
+            <TextView
+                android:paddingLeft="5dp"
+                android:paddingStart="5dp"
+                android:textColor="#000"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notes" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/etTestNote"
+                    android:backgroundTint="#dadada"
+                    android:hint="Add test notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/ivClearTestNote"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/clear"/>
+            </FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/buttonNearByLocation"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <ImageView
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/buttonCurrentLocation"
+                    android:padding="15dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/icon_location"
+                    style="@style/FCShadowButtonStyle"
+                    />
+                <TextView
+                    android:paddingLeft="5dp"
+                    android:paddingStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/lblTestName"
+                    android:layout_toLeftOf="@+id/buttonCurrentLocation"
+                    android:layout_toStartOf="@+id/buttonCurrentLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000"
+                    android:text="Location" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lblTestName"
+                    android:layout_toLeftOf="@+id/buttonCurrentLocation"
+                    android:layout_toStartOf="@+id/buttonCurrentLocation"
+                    android:orientation="vertical">
+                    <FrameLayout
+                        android:id="@+id/containerBizLocation"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:paddingLeft="5dp"
+                            android:paddingStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/lblTestBusinessName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000"
+                            android:textSize="16sp"
+                            android:hint="Address"
+                            />
+                        <ImageView
+                            android:id="@+id/ivClearTestBusinessName"
+                            android:layout_gravity="right|center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/clear"/>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                        <EditText
+                            android:id="@+id/etBusinessLocation"
+                            android:hint="Address"
+                            android:backgroundTint="#dadada"
+                            android:layout_width="match_parent"
+                            android:minHeight="40dp"
+                            android:layout_height="wrap_content" />
+                        <ImageView
+                            android:id="@+id/ivClearTestBusinessLocation"
+                            android:layout_gravity="right|center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/clear"/>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:text="Add Photos" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="10dp"
+                android:background="#dadada"/>
+
+            <GridLayout
+                android:id="@+id/addedPhotosContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                >
+                <RelativeLayout
+                    android:layout_margin="5dp"
+                    android:id="@+id/addPhoto"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    >
+                    <ImageView
+                        android:layout_centerInParent="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/icon_add_photo"/>
+                </RelativeLayout>
+
+            </GridLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+
+                <com.ph7.analyserforscio.views.ShadowedButton
+                    android:id="@+id/saveForLater"
+                    android:text="Save for later"
+                    android:layout_weight="1"
+                    android:layout_margin="2dp"
+                    android:layout_width="0dp"
+                    style="@style/RedButtonStyle"/>
+
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/rescanButton"
+                    android:text="Rescan"
+                    android:gravity="center"
+                    android:layout_margin="2dp"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/rescan"
+                    style="@style/FCShadowButtonStyle" />
+
+                <com.ph7.analyserforscio.views.ShadowedButton
+                    android:id="@+id/analyseNow"
+                    android:text="Analyse Now"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="2dp"
+                    style="@style/GreenButtonStyle"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/results"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/TextAppearance.AppCompat.Title"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

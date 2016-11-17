@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <ImageView
+
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:id="@+id/ivBluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_bluetooth_list"/>
+
+
+
+    <TextView
+        android:layout_toEndOf="@+id/ivBluetooth"
+        android:layout_toStartOf="@+id/progressBar"
+        android:layout_centerVertical="true"
+        android:id="@+id/tvName"
+        android:padding="5dp"
+        android:hint="Add Another"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="22sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="TryKorda-1000"
+       />
+    <ProgressBar
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true" />
+
+</RelativeLayout>

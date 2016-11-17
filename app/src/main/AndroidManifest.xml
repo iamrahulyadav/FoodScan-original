@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ph7.analyserforscio">
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true" />
+
+    <application
+        android:name=".application.FoodScanApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:theme="@style/WhiteTheme">
+
+        <!-- Onboarding -->
+        <activity
+            android:name=".activities.onboarding.StartUpActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Login -->
+        <activity
+            android:name=".activities.onboarding.CPLoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/WhiteTheme" />
+        <activity
+            android:name="com.consumerphysics.android.sdk.sciosdk.ScioLoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.onboarding.FoodScanLoginActivity"
+            android:label="@string/food_scan_login"
+            android:screenOrientation="portrait"
+            android:theme="@style/WhiteTheme" />
+
+        <activity
+            android:name=".activities.onboarding.AuthDialog"
+            android:label="@string/food_scan_login"
+            android:screenOrientation="portrait"
+            android:theme="@style/WhiteTheme" />
+
+        <activity
+            android:name=".activities.onboarding.ConnectScannerActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/WhiteTheme" />
+
+        <!-- Main -->
+        <activity
+            android:name=".activities.main.DashboardActivity"
+            android:label="@string/app_name"
+            android:logo="@drawable/graphic_foodscan_logo_small"
+            android:screenOrientation="portrait"
+            android:theme="@style/WhiteTheme" />
+        <activity
+            android:name=".activities.main.DiscoverDevicesActivity"
+            android:label="@string/discover_devices"
+            android:screenOrientation="portrait"
+            android:theme="@style/BlueTheme" />
+        <activity
+            android:name=".activities.main.MyTestsActivity"
+            android:label="@string/my_tests"
+            android:screenOrientation="portrait"
+            android:theme="@style/RedTheme" />
+
+        <!-- Scan -->
+        <activity
+            android:name=".activities.scan.NewTestActivity"
+            android:label="@string/new_test"
+            android:screenOrientation="portrait"
+            android:theme="@style/GreenTheme">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".activities.scan.TestDetailsActivity"
+            android:label="@string/test_details"
+            android:screenOrientation="portrait"
+            android:theme="@style/GreenTheme" />
+        <activity
+            android:name=".activities.main.LocationActivity"
+            android:label="@string/nearby_locations"
+            android:screenOrientation="portrait"
+            android:theme="@style/GreenTheme" />
+        <activity
+            android:name=".activities.analyse.TestDetailForAnalyseActivity"
+            android:label="@string/test_details_for_analyse"
+            android:screenOrientation="portrait"
+            android:theme="@style/RedTheme" />
+        <activity
+            android:name=".activities.analyse.TestResultsActivity"
+            android:label="@string/test_results"
+            android:screenOrientation="portrait"
+            android:theme="@style/RedTheme" />
+        <activity
+            android:name=".activities.scan.ReTestDetailsActivity"
+            android:label="@string/test_results"
+            android:screenOrientation="portrait"
+            android:theme="@style/GreenTheme" />
+        <activity
+            android:name=".activities.main.Settings"
+            android:label="@string/settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/GreyTheme" />
+        <activity
+            android:name=".activities.main.Help"
+            android:label="@string/help"
+            android:screenOrientation="portrait"
+            android:theme="@style/GreyTheme" />
+        <activity
+            android:name=".activities.scan.CollectionModelSelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:label="@string/buy_product"
+            android:name=".activities.purchase.PurchaseProductScreen"
+            android:theme="@style/GreenTheme" />
+    </application>
+
+</manifest>

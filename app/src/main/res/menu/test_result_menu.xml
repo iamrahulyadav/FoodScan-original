@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_rescan"
+        android:icon="@drawable/rescan"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/settings"
+        android:title="@string/settings">
+    </item>
+    <item
+        android:id="@+id/action_version"
+        android:title="@string/version_info">
+    </item>
+    <item
+        android:id="@+id/action_topup"
+        android:title="@string/top_up">
+    </item>
+    <item
+        android:id="@+id/action_help"
+        android:title="@string/help">
+    </item>
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/logout">
+    </item>
+</menu>

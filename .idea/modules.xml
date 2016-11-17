@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Analyser for Scio.iml" filepath="$PROJECT_DIR$/Analyser for Scio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SCiOSDK_Android-v1.0.2.72-20161030/SCiOSDK_Android-v1.0.2.72-20161030.iml" filepath="$PROJECT_DIR$/SCiOSDK_Android-v1.0.2.72-20161030/SCiOSDK_Android-v1.0.2.72-20161030.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/licensing/licensing.iml" filepath="$PROJECT_DIR$/licensing/licensing.iml" />
+    </modules>
+  </component>
+</project>

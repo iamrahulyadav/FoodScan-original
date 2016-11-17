@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    android:padding="10dp">
+
+    <TextView
+
+        android:id="@+id/tvProductTitle"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#393030"
+        android:textSize="22sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="5,000 Scans (Analyser for SCiO)"
+        android:textStyle="bold"
+       />
+
+    <TextView
+        android:id="@+id/tvProductDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textSize="18sp"
+        android:ellipsize="end"
+        android:textColor="#7c7c73"
+        android:text="Top up the number of scans you want to record to the database."
+        />
+
+    <LinearLayout
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#7c7c73"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price : "/>
+
+        <TextView
+            android:textColor="#7c7c73"
+            android:id="@+id/tvProductPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="890.00"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:gravity="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            style="@style/FCShadowButtonStyle"
+            android:id="@+id/tvProductBuy"
+            android:gravity="center"
+            android:text="Select Product"
+            android:layout_width="wrap_content"
+             />
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

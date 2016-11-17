@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+
+    tools:context="com.ph7.analyserforscio.activities.analyse.TestDetailForAnalyseActivity">
+
+    <ScrollView
+
+        android:layout_above="@+id/startTest"
+        android:layout_below="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            >
+
+            <RelativeLayout
+                android:id="@+id/startNewTestContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:id="@+id/ivScanImages"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/default_img"/>
+
+                <LinearLayout
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/ivScanImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/tvTestName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="marquee"
+                        android:text="Start a new testcxcdsfsdfasdfasdf"
+                        android:textColor="#484843"
+                        android:textSize="20sp"/>
+                    <View
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#bfbfb4" />
+                    <TextView
+                        android:id="@+id/testCreatedDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Start New Test"
+                        android:textSize="20sp"
+                        android:textColor="#888880"/>
+                </LinearLayout>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_gravity="start"
+                    style="@style/PortionHeading"
+                    android:text="Test Notes"/>
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#bfbfb4" />
+
+                <TextView
+                    android:id="@+id/tvTestNote"
+                    android:textColor="#484843"
+                    android:textSize="18sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_gravity="start"
+                    style="@style/PortionHeading"
+                    android:text="Location"/>
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#bfbfb4" />
+                <TextView
+                    android:id="@+id/tvTestBusinessLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#484843"
+                    android:textSize="18sp"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_gravity="start"
+                style="@style/PortionHeading"
+                android:text="Collections"/>
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#bfbfb4" />
+
+            <TextView
+                android:id="@+id/tvCollectionName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="Start a new test"
+                android:textColor="#484843"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_gravity="start"
+                style="@style/PortionHeading"
+                android:text="Model to analyse"/>
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#bfbfb4" />
+
+            <LinearLayout
+                android:id="@+id/selectedModelsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="Start a new test"
+                    android:textColor="#484843"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="Start a new test"
+                    android:textColor="#484843"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="Start a new test"
+                    android:textColor="#484843"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <com.ph7.analyserforscio.views.ShadowedButton
+
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                android:id="@+id/analyseNow"
+                android:layout_width="150dp"
+                android:text="Analyse now"
+                style="@style/GreenButtonStyle"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
