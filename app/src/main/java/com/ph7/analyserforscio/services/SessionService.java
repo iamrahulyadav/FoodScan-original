@@ -50,9 +50,8 @@ public class SessionService {
     public void setUserToken(String token) {
         this.preferences.edit().putString("AnalyserForSCIOToken", token).commit();
         long currMillis =  Calendar.getInstance().getTime().getTime();
-        long expire =  currMillis + 600000L  ;
+        long expire =  currMillis + 2419200000L  ; // 28 days
         this.preferences.edit().putLong("expire",expire).commit();
-
     }
 
     public boolean isExpireAccessToken()

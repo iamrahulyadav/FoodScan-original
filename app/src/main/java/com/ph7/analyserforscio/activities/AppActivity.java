@@ -43,6 +43,7 @@ import com.ph7.analyserforscio.activities.scan.ReTestDetailsActivity;
 import com.ph7.analyserforscio.activities.scan.TestDetailsActivity;
 import com.ph7.analyserforscio.application.FoodScanApplication;
 import com.ph7.analyserforscio.callbacks.DeviceConnectHandler;
+import com.ph7.analyserforscio.callbacks.ExceptionHandler;
 import com.ph7.analyserforscio.callbacks.ScanHandler;
 import com.ph7.analyserforscio.device.DeviceHandler;
 import com.ph7.analyserforscio.device.interfaces.DeviceHandlerInterface;
@@ -83,10 +84,11 @@ public class AppActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(AppActivity.this));
         this.scioCloud = new ScioCloud(this);
 
         //inAppBillingModule();
-        Thread.setDefaultUncaughtExceptionHandler(handleAppCrash);
+
     }
 
 
@@ -148,7 +150,7 @@ public class AppActivity extends AppCompatActivity  {
                         dialogInterface.dismiss();
                     }
                 });
-                builder.create() ;
+                builder.create();
                 builder.show();
                 return false ;
             }
@@ -417,19 +419,20 @@ public class AppActivity extends AppCompatActivity  {
     }
 
 
-    private Thread.UncaughtExceptionHandler handleAppCrash =
-            new Thread.UncaughtExceptionHandler() {
-                @Override
-                public void uncaughtException(Thread thread, Throwable ex) {
-                   // Log.e("UncaughtException", ex.toString());
-
-                    Toast.makeText(AppActivity.this, ex.toString(), Toast.LENGTH_SHORT).show();
-                    Log.e("UncaughtException", ex.toString());
-
-                    //send email here
-
-                }
-            };
+//    private Thread.UncaughtExceptionHandler handleAppCrash =
+//            new Thread.UncaughtExceptionHandler() {
+//                @Override
+//                public void uncaughtException(Thread thread, Throwable ex) {
+//                   // Log.e("UncaughtException", ex.toString());
+//
+//                    Toast.makeText(AppActivity.this, ex.toString(), Toast.LENGTH_SHORT).show();
+//                    Log.e("UncaughtException", ex.toString());
+//
+//                    thread.stop();
+//                    //send email here
+//
+//                }
+//            };
 
 
 }

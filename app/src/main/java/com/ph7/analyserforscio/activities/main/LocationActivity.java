@@ -40,7 +40,7 @@ public class LocationActivity extends AppActivity implements GoogleApiClient.Con
     ListView listViewNearByLocations ;
     SpinnerBusinessAdapter businessAdapter ;
     List<Business> nearbyBusinesses ;
-    private SessionService sessionService ;
+    private SessionService sessionService = new SessionService() ;
     private GoogleApiClient googleApiClient;
     private android.location.Location lastKnownLocation;
 
@@ -104,7 +104,7 @@ public class LocationActivity extends AppActivity implements GoogleApiClient.Con
     private FoodScanService foodScanService = new FoodScanService();
     private void reloadBusinesses() {
 
-        if(sessionService ==null || sessionService.getUsername() == null || sessionService.getUserToken().trim().isEmpty())
+        if(sessionService ==null || sessionService.getUserToken().trim().isEmpty())
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(LocationActivity.this);
             builder.setMessage("Food Scan Login required.");

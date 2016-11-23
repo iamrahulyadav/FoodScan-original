@@ -36,6 +36,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,8 @@ import com.ph7.analyserforscio.activities.main.LocationActivity;
 import com.ph7.analyserforscio.application.FoodScanApplication;
 import com.ph7.analyserforscio.application.PermissionRequestHandler;
 import com.ph7.analyserforscio.callbacks.FoodScanHandler;
+import com.ph7.analyserforscio.callbacks.ScanHandler;
+import com.ph7.analyserforscio.callbacks.ScanUpdateHandler;
 import com.ph7.analyserforscio.callbacks.ScioCloudAnalyzeManyModelCallback;
 import com.ph7.analyserforscio.models.ph7.Business;
 import com.ph7.analyserforscio.models.ph7.Location;
@@ -66,6 +69,7 @@ import com.ph7.analyserforscio.models.scio.SCIOResultDataModel;
 import com.ph7.analyserforscio.services.FCDBService;
 import com.ph7.analyserforscio.services.FoodScanService;
 import com.ph7.analyserforscio.services.ScanStorageService;
+import com.ph7.analyserforscio.services.ScanningService;
 import com.ph7.analyserforscio.services.SessionService;
 import com.ph7.analyserforscio.services.interfaces.AnalyzerInterface;
 import com.ph7.analyserforscio.utils.Validation;
@@ -261,6 +265,7 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
         this.setupBundle();
         this.setupAnalyse();
         this.setupLocation();
+        this.setupRescan();
         this.setupSaveForLater();
         this.setupAddPhotoView();
         setActionBarOverlayZero();
@@ -325,12 +330,13 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
     }
 
     private void setupSaveForLater() {
-        final Button button = (Button) findViewById(R.id.saveForLater);
+        final LinearLayout button = (LinearLayout) findViewById(R.id.saveForLater);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveForLaterAnalyse();
+                //saveForLaterAnalyse();
+                saveNGoToNext("");
             }
         });
     }
@@ -420,6 +426,106 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
 
     }
 
+    private void saveNGoToNext(String where)
+    {
+        final EditText etTestName =  (EditText) findViewById(R.id.etTestName) ;
+        final EditText etTestNote =  (EditText) findViewById(R.id.etTestNote) ;
+
+        String test_id=  Validation.generateRandomString(15);
+        String test_name = etTestName.getText().toString().trim();
+        if(test_name.isEmpty())
+        {
+            Snackbar.make(etTestName, "Please enter test name.", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        String test_note = etTestNote.getText().toString().trim() ;
+
+        // business Location json
+        String test_location = "";
+        try {
+            test_location = createBusinessJSON();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("FoodScan","Test Location : "+test_location);
+
+        String create_datetime = dateFormat.format(Calendar.getInstance().getTime());
+        //create_datetime = create_datetime.replace(" "," at ");
+        String expire= "" ;
+        String imgs_path = "" ;
+
+        for (String imagePath:listImages) {
+            imgs_path = imgs_path+","+imagePath;
+        }
+        if(!imgs_path.isEmpty())
+        {
+            imgs_path = imgs_path.substring(1);
+        }
+
+        List<ScioReading> scioReadings = new ArrayList<>();
+        for (ScioReadingWrapper scioReadingWrapper : readings) {
+            scioReadings.add(scioReadingWrapper.getScioReading());
+        }
+
+        ScanStorageService scanStorageService =  new ScanStorageService();
+        String scanDirPath  = scanStorageService.initScansStorage(getApplicationContext());
+        scanStorageService.saveScanToStorage(scioReadings);
+
+        FCDBService fcdbService = new FCDBService(getApplicationContext());
+        try {
+            String timeStamp  = String.valueOf(Calendar.getInstance().getTime().getTime());
+            if (fcdbService.saveTestScan(test_id, test_name, test_note, test_location,this.analysedData.model_ids,
+                    this.analysedData.collection_id,scanDirPath, this.scans,create_datetime, expire, imgs_path,timeStamp)) {
+                switch(where)
+                {
+                    case "scan" :
+                        Toast.makeText(ReTestDetailsActivity.this, "Saved for later", Toast.LENGTH_SHORT).show();
+                        rescan();
+                        break ;
+
+                    case "login":
+                        Toast.makeText(ReTestDetailsActivity.this, "Saved for later", Toast.LENGTH_SHORT).show();
+                        break ;
+
+                    default :
+                        final StatusView statusView = new StatusView(ReTestDetailsActivity.this);
+                        statusView.setStatusCode(1);
+                        statusView.setStatusMessage("Saved for later");
+                        statusView.show();
+                        statusView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                statusView.hide();
+                                startActivity(new Intent(ReTestDetailsActivity.this, DashboardActivity.class));
+                                finish();
+                            }
+                        });
+                        break ;
+                }
+            } else {
+                final StatusView statusView = new StatusView(ReTestDetailsActivity.this);
+                statusView.setStatusCode(0);
+                statusView.setStatusMessage("Something Wrong");
+                statusView.show();
+                statusView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        statusView.hide();
+                    }
+                });
+
+            }
+
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally {
+            fcdbService.close();
+        }
+    }
+
     private String createBusinessJSON() throws JSONException {
         JSONObject businessJOBj = new JSONObject();
         String test_location= etBusinessLocation.getText().toString().trim() ;
@@ -460,9 +566,19 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
     }
 
 
+    private void setupRescan() {
+        final LinearLayout rescanButton = (LinearLayout) findViewById(R.id.rescanButton);
+        rescanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //saveAndScan(true);
+                saveNGoToNext("scan");
+            }
+        });
+    }
 
     private void setupAnalyse() {
-        final Button button = (Button) findViewById(R.id.analyseNow);
+        final LinearLayout button = (LinearLayout) findViewById(R.id.analyseNow);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -476,7 +592,8 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
 
                 if(!isLogin())
                 {
-                    saveForLaterAnalyse();
+                    ///saveForLaterAnalyse();
+                    saveNGoToNext("login");
                     return ;
                 }
                 //    if(checkValidation()) {
@@ -487,7 +604,6 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
                     return;
                 }
 
-                button.setText("Analysing");
                 analyseReadings();
                 //    }
             }
@@ -496,7 +612,7 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
     private static final int REQUEST_COLLECTION_MODEL = 109 ;
 
     private void analyseReadings() {
-        final Button button = (Button) findViewById(R.id.analyseNow);
+        final LinearLayout button = (LinearLayout) findViewById(R.id.analyseNow);
         final ReTestDetailsActivity _this = this;
 
         List<ScioReading> scioReadings = new ArrayList<>();
@@ -516,7 +632,6 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        button.setText("Analyse Now");
                         updateScan(models);
                         Toast.makeText(_this, "Analyse complete, sending to FoodScan", Toast.LENGTH_LONG).show();
                         logScan(statusView);
@@ -528,7 +643,6 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
             @Override
             public void onError(int code, String msg) {
                 Log.d("Analyse Result", msg);
-                button.setText("Analyse Now");
                 statusView.setStatusCode(0);
                 statusView.setBGColor();
                 statusView.setStatusMessage("Analyze failed");
@@ -981,6 +1095,79 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
         listImages.add(filePath);
         ++addImagesLimit;
     }
+
+    private void rescan() {
+        this.setupSoundPool();
+        final ReTestDetailsActivity _this = this;
+        final int _soundId =  this.soundId ;
+        final  StatusView statusView = new StatusView(ReTestDetailsActivity.this);
+        statusView.setStatusCode(2);
+        statusView.setStatusMessage("Scanning in progress...");
+        statusView.show();
+        final int streamId =  (new SessionService().isSoundTurnedOn()) ?soundPool.play(_soundId,1.0f,1.0f,1,-1,1):0;
+
+        new ScanningService().execute(new ScanHandler() {
+            @Override
+            public void onComplete(final List<ScioReadingWrapper> scioReadings) {
+                if(new SessionService().isSoundTurnedOn())
+                    soundPool.stop(streamId);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        statusView.setStatusCode(1);
+                        statusView.setBGColor();
+                        statusView.setStatusMessage("Test complete");
+                        statusView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                statusView.hide();
+                                _this.readings = scioReadings ;
+                                String collectionName = "";
+                                EditText etTestName  =  (EditText) _this.findViewById(R.id.etTestName);
+                                if(collection!= null)
+                                    collectionName =  _this.collection.getName()+"_" ;
+                                String test_name = collectionName + Calendar.getInstance().getTime().getTime()+"_"+scans;
+                                etTestName.setText(test_name);
+                                etTestName.setSelection(etTestName.getText().length());
+                                _this.setupBundle();
+                            }
+                        });
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailed(final Error exception) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(new SessionService().isSoundTurnedOn())
+                            soundPool.stop(streamId);
+                        Log.d("Reading", exception.getLocalizedMessage());
+                        if (exception instanceof ScanningService.DeviceNeedsCalibrationError) {
+                            statusView.hide();
+                            Toast.makeText(_this, "SCiO needs calibration", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        },this.scans, new ScanUpdateHandler() {
+            @Override
+            public void updateScanCount(final int scanCount) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        statusView.setStatusMessage("Scan "+scanCount+" in progress...");
+                    }
+                });
+
+            }
+        });
+    }
+
+
+
 
     /**********************************
      * Get Current Location and Log it
