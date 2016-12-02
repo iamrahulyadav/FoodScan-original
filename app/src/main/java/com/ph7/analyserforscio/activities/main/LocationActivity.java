@@ -104,7 +104,7 @@ public class LocationActivity extends AppActivity implements GoogleApiClient.Con
     private FoodScanService foodScanService = new FoodScanService();
     private void reloadBusinesses() {
 
-        if(sessionService ==null || sessionService.getUserToken().trim().isEmpty())
+        if(sessionService ==null || sessionService.getUserToken() ==null|| sessionService.getUserToken().trim().isEmpty())
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(LocationActivity.this);
             builder.setMessage("Food Scan Login required.");
@@ -130,7 +130,6 @@ public class LocationActivity extends AppActivity implements GoogleApiClient.Con
 
                     for (Integer i=0; i < jsonBusinesses.length(); i++) {
                         JSONObject jsonBusiness = jsonBusinesses.getJSONObject(i);
-
                         Business business = new Business();
                         business.setId(jsonBusiness.getInt("id"));
                         business.setName(jsonBusiness.getString("name"));

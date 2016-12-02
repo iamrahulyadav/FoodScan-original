@@ -8,6 +8,9 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.consumerphysics.android.sdk.callback.cloud.ScioCloudModelsCallback;
+import com.consumerphysics.android.sdk.model.ScioModel;
 import com.ph7.analyserforscio.R;
 import com.ph7.analyserforscio.activities.AppActivity;
 import com.ph7.analyserforscio.adapters.SpinnerSCIOCollectionAdapter;
@@ -21,8 +24,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class CollectionModelSelectionActivity extends AppActivity {
 
@@ -119,48 +124,96 @@ public class CollectionModelSelectionActivity extends AppActivity {
 
 
     private void getCollections() {
+        // New
+        getCollectionFromCPForSpecificUser();
 
-        this.foodScanService.getCollections(new FoodScanHandler() {
+        // old
+//        this.foodScanService.getCollections(new FoodScanHandler() {
+//            @Override
+//            public void onSuccess(JSONObject object) {
+//                try {
+//
+//                    collections = ScioCollection.fromJSON(object.getJSONArray("collections"));
+//                } catch (JSONException e) {
+//                    collections = new ArrayList<>();
+//                }
+//                collectionAdapter.clear();
+//                ScioCollection scioCollection =  new ScioCollection("Choose a collection");
+//                collectionAdapter.add(scioCollection);
+//                collectionAdapter.addAll(collections);
+//                collectionAdapter.notifyDataSetChanged();
+//                collectionList.setSelection(0);
+//            }
+//
+//            @Override
+//            public void onError() {
+//                    regenerateTokenRequest() ;
+//            }
+//        });
+    }
+
+    private void getCollectionFromCPForSpecificUser() {
+
+        this.scioCloud.getModels(new ScioCloudModelsCallback() {
             @Override
-            public void onSuccess(JSONObject object) {
-                try {
+            public void onSuccess(List<ScioModel> list) {
 
-                    collections = ScioCollection.fromJSON(object.getJSONArray("collections"));
-                } catch (JSONException e) {
-                    collections = new ArrayList<>();
+                HashMap<String,ScioCollection> modelHashMap = new HashMap<>();
+                for (ScioModel scioModel : list) {
+                    String collName  = scioModel.getCollectionName() ;
+                    if(modelHashMap.containsKey(collName)) {
+                        ScioCollectionModel scioCollectionModel = new ScioCollectionModel(scioModel.getName(),scioModel.getId(),scioModel.getType().toString().toLowerCase());
+                        modelHashMap.get(collName).addModel(scioCollectionModel);
+                    }
+                    else {
+                        ScioCollection scioCollection = new ScioCollection(collName);
+                        String uuid  = UUID.randomUUID().toString() ;
+                        scioCollection.setUuid(uuid);
+                        ScioCollectionModel scioCollectionModel = new ScioCollectionModel(scioModel.getName(),scioModel.getId(),scioModel.getType().toString().toLowerCase());
+                        scioCollection.addModel(scioCollectionModel);
+                        modelHashMap.put(collName,scioCollection);
+                    }
                 }
+
+                collections = new ArrayList<>();
                 collectionAdapter.clear();
                 ScioCollection scioCollection =  new ScioCollection("Choose a collection");
                 collectionAdapter.add(scioCollection);
+                Iterator it = modelHashMap.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry)it.next();
+                    collections.add((ScioCollection) pair.getValue()) ;
+                    it.remove(); // avoids a ConcurrentModificationException
+                }
                 collectionAdapter.addAll(collections);
                 collectionAdapter.notifyDataSetChanged();
                 collectionList.setSelection(0);
             }
 
             @Override
-            public void onError() {
-                    regenerateTokenRequest() ;
+            public void onError(int i, String s) {
+
             }
         });
     }
 
-    private void regenerateTokenRequest() {
-        Log.d("Token","Regenerated");
-        Map<String, String> params = new HashMap<>();
-        params.put("email",sessionService.getUsername());
-        params.put("password", sessionService.getPassword());
-        foodScanService.login(params, new FoodScanHandler() {
-            @Override
-            public void onSuccess(JSONObject jsonObject) {
-                try {
-                    sessionService.setUserToken(jsonObject.getString("token"));
-                    getCollections();
-                } catch (JSONException e) { }
-            }
-            @Override
-            public void onError() {}
-        });
-    }
+//    private void regenerateTokenRequest() {
+//        Log.d("Token","Regenerated");
+//        Map<String, String> params = new HashMap<>();
+//        params.put("email",sessionService.getUsername());
+//        params.put("password", sessionService.getPassword());
+//        foodScanService.login(params, new FoodScanHandler() {
+//            @Override
+//            public void onSuccess(JSONObject jsonObject) {
+//                try {
+//                    sessionService.setUserToken(jsonObject.getString("token"));
+//                    getCollections();
+//                } catch (JSONException e) { }
+//            }
+//            @Override
+//            public void onError() {}
+//        });
+//    }
 
 
     private void addAnotherModelCollection() {

@@ -82,7 +82,6 @@ public class AuthDialog extends AppCompatActivity {
             {
                 Log.d("url",url);
                 if (url.startsWith("http://localhost/#")) {
-
                     try {
                         URI uri = new URI(url);
                         String fragment = uri.getFragment();

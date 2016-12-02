@@ -33,8 +33,8 @@ public class StartUpActivity extends AppActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initScioCloud(); // Before
-       // licenseCheckModule(); // After on Adding Licensing in App
+       // initScioCloud(); // Before
+        licenseCheckModule(); // After on Adding Licensing in App
     }
 
     private void initScioCloud() {
@@ -93,7 +93,7 @@ public class StartUpActivity extends AppActivity {
         public void allow(int reason) {
             if (isFinishing()) {
                 // Don't update UI if Activity is finishing.
-                initScioCloud();
+                ///initScioCloud();
                 return;
             }
             // Should allow user access.
@@ -132,7 +132,7 @@ public class StartUpActivity extends AppActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-      //  mChecker.onDestroy();
+        mChecker.onDestroy();
     }
 
 

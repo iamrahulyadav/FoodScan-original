@@ -17,7 +17,7 @@ public class ScioCollectionModel implements Parcelable {
 
     private String name;
     private String type;
-    private Float fitness;
+    private Float fitness= 0.0f ;
     private List<String> attributes;
 
     public ScioCollectionModel(Parcel in) {
@@ -37,6 +37,13 @@ public class ScioCollectionModel implements Parcelable {
     {
         this.name = modelName ;
         this.uuid =  uuid ;
+    }
+    public ScioCollectionModel(String modelName,String uuid,String type)
+    {
+        this.name = modelName ;
+        this.uuid =  uuid ;
+        this.type =  type;
+        this.attributes =  new ArrayList<>();
     }
 
 

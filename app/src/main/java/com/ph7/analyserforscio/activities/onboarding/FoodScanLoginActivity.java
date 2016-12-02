@@ -104,21 +104,20 @@ public class FoodScanLoginActivity extends AppActivity {
     }
 
     private void loginFoodScan() {
-        startActivityForResult(new Intent(FoodScanLoginActivity.this, AuthDialog.class),FS_LOGIN_RESULT);
+        startActivityForResult(new Intent(FoodScanLoginActivity.this, AuthDialog.class),FS_LOGIN_RESULT); //AuthDialog.class
     }
 
-    private void checkBlankFieldValidation() {
-
-        if(!email.getText().toString().trim().isEmpty() && !password.getText().toString().trim().isEmpty()){
-            loginButton.setEnabled(true);
-            loginButton.setFocusable(true);
-        }
-        else{
-            loginButton.setEnabled(false);
-            loginButton.setFocusable(false);
-        }
-    }
-
+//    private void checkBlankFieldValidation() {
+//
+//        if(!email.getText().toString().trim().isEmpty() && !password.getText().toString().trim().isEmpty()){
+//            loginButton.setEnabled(true);
+//            loginButton.setFocusable(true);
+//        }
+//        else{
+//            loginButton.setEnabled(false);
+//            loginButton.setFocusable(false);
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -129,6 +128,7 @@ public class FoodScanLoginActivity extends AppActivity {
             if(resultCode == RESULT_OK) {
                 String token  = data.getStringExtra("token");
                 _this.sessionService.setUserToken(token);
+                _this.sessionService.setScanCount(1000);
                 startActivity(new Intent(_this, DashboardActivity.class));
                 finish();
             }else if (resultCode == RESULT_CANCELED)

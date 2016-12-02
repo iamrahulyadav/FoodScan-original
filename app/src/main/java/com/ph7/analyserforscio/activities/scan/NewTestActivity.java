@@ -18,7 +18,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.consumerphysics.android.sdk.callback.cloud.ScioCloudModelsCallback;
 import com.consumerphysics.android.sdk.callback.device.ScioDeviceCalibrateHandler;
+import com.consumerphysics.android.sdk.model.ScioModel;
 import com.ph7.analyserforscio.R;
 import com.ph7.analyserforscio.activities.AppActivity;
 import com.ph7.analyserforscio.adapters.SpinnerSCIOCollectionAdapter;
@@ -38,13 +40,16 @@ import com.ph7.analyserforscio.views.ShadowedButton;
 import com.ph7.analyserforscio.views.StatusView;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * The NewTestActivity is the entry point into starting a new test using the SCiO device.
@@ -376,51 +381,98 @@ public class NewTestActivity extends AppActivity {
     }
 
     private void getCollections() {
-
         progressBarCollection.setVisibility(View.VISIBLE);
-        this.foodScanService.getCollections(new FoodScanHandler() {
+
+        //get Collection n=and model from CP server for Specific User login
+        getCollectionFromCPForSpecificUser();
+
+        // get Collection From Food Scan Server
+//        this.foodScanService.getCollections(new FoodScanHandler() {
+//            @Override
+//            public void onSuccess(JSONObject object) {
+//                progressBarCollection.setVisibility(View.GONE);
+//                try {
+//                    collections = ScioCollection.fromJSON(object.getJSONArray("collections"));
+//                } catch (JSONException e) {
+//                    collections = new ArrayList<>();
+//                }
+//                collectionAdapter.clear();
+//                ScioCollection scioCollection =  new ScioCollection("Choose a collection");
+//                collectionAdapter.add(scioCollection);
+//                collectionAdapter.addAll(collections);
+//                collectionAdapter.notifyDataSetChanged();
+//                collectionList.setSelection(0);
+//            }
+//
+//            @Override
+//            public void onError() {
+//                // regenerateTokenRequest();
+//            }
+//
+////            private void regenerateTokenRequest() {
+////                Log.d("Token","Regenerated");
+////                Map<String, String> params = new HashMap<>();
+////                params.put("email",sessionService.getUsername());
+////                params.put("password", sessionService.getPassword());
+////                foodScanService.login(params, new FoodScanHandler() {
+////                    @Override
+////                    public void onSuccess(JSONObject jsonObject) {
+////                        try {
+////                            sessionService.setUserToken(jsonObject.getString("token"));
+////                            getCollections();
+////                        } catch (JSONException e) { }
+////                    }
+////                    @Override
+////                    public void onError() {}
+////                });
+////            }
+//        });
+    }
+
+    private void getCollectionFromCPForSpecificUser() {
+
+        this.scioCloud.getModels(new ScioCloudModelsCallback() {
             @Override
-            public void onSuccess(JSONObject object) {
+            public void onSuccess(List<ScioModel> list) {
                 progressBarCollection.setVisibility(View.GONE);
-                try {
-                    collections = ScioCollection.fromJSON(object.getJSONArray("collections"));
-                } catch (JSONException e) {
-                    collections = new ArrayList<>();
+                HashMap<String,ScioCollection> modelHashMap = new HashMap<>();
+                for (ScioModel scioModel : list) {
+                    String collName  = scioModel.getCollectionName() ;
+                    if(modelHashMap.containsKey(collName)) {
+                        ScioCollectionModel scioCollectionModel = new ScioCollectionModel(scioModel.getName(),scioModel.getId(),scioModel.getType().toString().toLowerCase());
+                        modelHashMap.get(collName).addModel(scioCollectionModel);
+                    }
+                    else {
+                        ScioCollection scioCollection = new ScioCollection(collName);
+                        String uuid  = UUID.randomUUID().toString() ;
+                        scioCollection.setUuid(uuid);
+                        ScioCollectionModel scioCollectionModel = new ScioCollectionModel(scioModel.getName(),scioModel.getId(),scioModel.getType().toString().toLowerCase());
+                        scioCollection.addModel(scioCollectionModel);
+                        modelHashMap.put(collName,scioCollection);
+                    }
                 }
+
+                collections = new ArrayList<>();
                 collectionAdapter.clear();
                 ScioCollection scioCollection =  new ScioCollection("Choose a collection");
                 collectionAdapter.add(scioCollection);
+                Iterator it = modelHashMap.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry)it.next();
+                    collections.add((ScioCollection) pair.getValue()) ;
+                    it.remove(); // avoids a ConcurrentModificationException
+                }
                 collectionAdapter.addAll(collections);
                 collectionAdapter.notifyDataSetChanged();
                 collectionList.setSelection(0);
-
             }
 
             @Override
-            public void onError() {
-                regenerateTokenRequest();
-            }
-
-            private void regenerateTokenRequest() {
-                Log.d("Token","Regenerated");
-                Map<String, String> params = new HashMap<>();
-                params.put("email",sessionService.getUsername());
-                params.put("password", sessionService.getPassword());
-                foodScanService.login(params, new FoodScanHandler() {
-                    @Override
-                    public void onSuccess(JSONObject jsonObject) {
-                        try {
-                            sessionService.setUserToken(jsonObject.getString("token"));
-                            getCollections();
-                        } catch (JSONException e) { }
-                    }
-                    @Override
-                    public void onError() {}
-                });
+            public void onError(int i, String s) {
+                progressBarCollection.setVisibility(View.GONE);
             }
         });
     }
-
 
 
     private void checkBlankFieldValidation() {
