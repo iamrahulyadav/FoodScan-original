@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="SCiOSDK_Android-v1.0.2.72-20161030-unspecified">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/FoodScan-original/SCiOSDK_Android-v1.0.2.72-20161030/unspecified/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/FoodScan-original/SCiOSDK_Android-v1.0.2.72-20161030/unspecified/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
