@@ -39,7 +39,7 @@
         <!--android:layout_centerVertical="true"-->
         <!--android:src="@drawable/graphic_battery_status_green"-->
         <!--/>-->
-        <com.ph7.analyserforscio.views.BatteryView
+        <com.ph7.foodscan.views.BatteryView
             android:id="@+id/ivBatteryStatus"
             android:layout_toStartOf="@+id/ivBluetoothStatus"
             android:layout_centerVertical="true"
@@ -174,7 +174,7 @@
 
             </LinearLayout>
 
-            <com.ph7.analyserforscio.views.ShadowedButton
+            <com.ph7.foodscan.views.ShadowedButton
                 android:id="@+id/calibrate"
                 android:layout_width="wrap_content"
                 android:layout_height="51dp"

@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
 
-    tools:context="com.ph7.analyserforscio.activities.scan.CollectionModelSelectionActivity">
+    tools:context="com.ph7.foodscan.activities.scan.CollectionModelSelectionActivity">
     <ScrollView
         android:layout_above="@+id/startTest"
         android:layout_below="@+id/button"
@@ -190,7 +190,7 @@
 
             </LinearLayout>
 
-            <com.ph7.analyserforscio.views.ShadowedButton
+            <com.ph7.foodscan.views.ShadowedButton
                 android:id="@+id/calibrate"
                 android:layout_width="wrap_content"
                 android:layout_height="51dp"

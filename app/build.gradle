@@ -5,11 +5,11 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.ph7.analyserforscio"
+        applicationId "com.ph7.foodscan"
         minSdkVersion 18
         targetSdkVersion 24
-        versionCode 42
-        versionName "1.52"
+        versionCode 13
+        versionName "1.13"
         multiDexEnabled = true
     }
     buildTypes {

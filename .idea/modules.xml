@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FoodScan-Master.iml" filepath="$PROJECT_DIR$/FoodScan-Master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FoodScan-original.iml" filepath="$PROJECT_DIR$/FoodScan-original.iml" />
       <module fileurl="file://$PROJECT_DIR$/SCiOSDK_Android-v1.0.2.72-20161030/SCiOSDK_Android-v1.0.2.72-20161030.iml" filepath="$PROJECT_DIR$/SCiOSDK_Android-v1.0.2.72-20161030/SCiOSDK_Android-v1.0.2.72-20161030.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />

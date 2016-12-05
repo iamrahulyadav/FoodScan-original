@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Analyser for Scio</string>
+    <string name="app_name">FoodScan</string>
     <string name="food_scan_login">Login to Food Scan</string>
     <string name="dashboard">Dashboard</string>
     <string name="searchingForDevices">Searching For Devices</string>

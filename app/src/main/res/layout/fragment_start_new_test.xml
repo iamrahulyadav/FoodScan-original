@@ -85,15 +85,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp">
-                <com.ph7.analyserforscio.views.ShadowedButton
+                <com.ph7.foodscan.views.ShadowedButton
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     style="@style/RedButtonStyle"/>
+
                 <LinearLayout
                     android:id="@+id/myTestActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="3"
+                    android:weightSum="2"
                     android:padding="5dp"
                     >
 
@@ -155,38 +156,8 @@
                             android:layout_gravity="center"
                             android:textColor="#FFF"/>
                     </LinearLayout>
-                    <View
-                        android:layout_width="3dp"
-                        android:background="#a44547"
-                        android:layout_height="80dp" />
 
-                    <LinearLayout
-                        android:id="@+id/skuProductListView"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content"
-                       android:layout_gravity="center_vertical"
-                        android:background="?android:attr/selectableItemBackground"
-                        >
-                        <TextView
-                            android:id="@+id/tvScanCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="10000"
-                            android:textStyle="bold"
-                            android:textSize="26sp"
-                            android:layout_gravity="center"
-                            android:textColor="#FFF"/>
-                        <TextView
 
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Scan Credit"
-                            android:textSize="14sp"
-                            android:layout_gravity="center"
-                            android:textColor="#FFF"/>
-                    </LinearLayout>
                 </LinearLayout>
 
             </FrameLayout>
@@ -206,7 +177,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ph7.analyserforscio.views.ShadowedButton
+                <com.ph7.foodscan.views.ShadowedButton
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     style="@style/SkyButtonStyle"/>
@@ -244,7 +215,7 @@
                     <!--android:layout_centerVertical="true"-->
                     <!--android:src="@drawable/graphic_battery_status_green"-->
                     <!--/>-->
-                    <com.ph7.analyserforscio.views.BatteryView
+                    <com.ph7.foodscan.views.BatteryView
                         android:id="@+id/ivBatteryStatus"
                         android:layout_toStartOf="@+id/ivBluetoothStatus"
                         android:layout_centerVertical="true"
@@ -276,7 +247,7 @@
                 android:layout_marginTop="10dp"
                 android:id="@+id/buttonCalibrateCont"
                >
-                <com.ph7.analyserforscio.views.ShadowedButton
+                <com.ph7.foodscan.views.ShadowedButton
                     android:id="@+id/calibrateButtonBG"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -329,7 +300,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <com.ph7.analyserforscio.views.ShadowedButton
+                <com.ph7.foodscan.views.ShadowedButton
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     style="@style/GreyButtonStyle"/>

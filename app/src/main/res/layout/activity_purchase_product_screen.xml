@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ph7.analyserforscio.activities.purchase.PurchaseProductScreen">
+    tools:context="com.ph7.foodscan.activities.purchase.PurchaseProductScreen">
 
     <ListView
         android:id="@+id/listView"

@@ -8,7 +8,7 @@
         android:id="@+id/newTestFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.ph7.analyserforscio.fragments.StartNewTestFragment"
+        android:name="com.ph7.foodscan.fragments.StartNewTestFragment"
         tools:layout="@layout/fragment_start_new_test"></fragment>
 
 </LinearLayout>
