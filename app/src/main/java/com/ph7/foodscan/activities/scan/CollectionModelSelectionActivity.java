@@ -149,6 +149,7 @@ public class CollectionModelSelectionActivity extends AppActivity {
             @Override
             public void onError() {
                     //regenerateTokenRequest() ;
+                getCollections();
             }
         });
     }

@@ -28,7 +28,7 @@ public class AuthDialog extends AppCompatActivity {
     private static String TAG = "AuthDialog";
 
     private static String OAUTH_AUTH_URL = "https://auth.foodscan.co.uk/oauth/v2/auth";
-    private static String OAUTH_CLIENT_ID = "e32dfcd4-f06d-48c2-86e8-16ee1621efc1";
+    private static String OAUTH_CLIENT_ID = "5536626e-476d-4115-9054-6624edafd3ad";
     private static String OAUTH_REDIRECT_URI="http://localhost";
     private static String OAUTH_RESPONSE_TYPE="token";
     private static String OAUTH_SCOPES="basic";

@@ -181,6 +181,23 @@ public class EstimationModelDetailsView extends LinearLayout {
         // and then we can return your byte array.
         return byteBuffer.toByteArray();
     }
+    public void setNotEstimationModelRecord(String modelRows)
+    {
+        if(!modelRows.isEmpty()) {
+            try {
+                JSONObject rootJobj = new JSONObject(modelRows);
+                JSONObject modelJObj = rootJobj.getJSONObject("model");
+                String modelName = modelJObj.getString("name");
+                tvModelName.setText(modelName);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            ivEstimationGraph.setVisibility(GONE);
+            setupRow(-1, "", "", "Not Known");
+
+        }
+    }
+
     private void setupRow(int i, String min , String max,String value) {
 
         ViewGroup.LayoutParams param = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
@@ -191,7 +208,8 @@ public class EstimationModelDetailsView extends LinearLayout {
         TextView tv1 = new TextView(getContext());
 
         if(i>0) tv1.setText("Scan" + i);
-        else tv1.setText("Aggregate");
+        else if(i==0) tv1.setText("Aggregate");
+        else tv1.setText("Aggregation");
 
         tv1.setPadding(10,10,10,10);
         tv1.setTextSize(TEXT_SIZE);

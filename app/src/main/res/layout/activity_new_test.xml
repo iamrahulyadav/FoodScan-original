@@ -61,10 +61,53 @@
             android:layout_centerVertical="true"
             android:text="Device Name"/>
     </RelativeLayout>
+    <LinearLayout
+        android:paddingStart="15dp"
+        android:paddingLeft="15dp"
+        android:paddingEnd="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp"
 
+        android:background="#f0f0f0"
+        android:layout_below="@+id/button"
+        android:id="@+id/scanCountContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_gravity="start"
+            style="@style/PortionHeading"
+            android:text="Scans per test"/>
+        <View
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#bfbfb4" />
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/seekBarScansCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsb_indicatorElevation="0dp"
+            app:dsb_mirrorForRtl="true"
+            app:dsb_rippleColor="@android:color/transparent"
+            app:dsb_min="0"
+            app:dsb_max="10"
+            app:dsb_value="1"
+            app:dsb_trackColor="#b9b9b9"
+            app:dsb_progressColor="#3daf64"
+            app:dsb_indicatorColor="#3daf64"
+            app:dsb_thumbSize="4dp"
+            app:dsb_trackHeight="4dp"
+            app:dsb_scrubberHeight="4dp"
+            app:dsb_indicatorSeparation="4dp"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
     <ScrollView
         android:layout_above="@+id/startTest"
-        android:layout_below="@+id/button"
+        android:layout_below="@+id/scanCountContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -73,35 +116,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:padding="15dp">
-            <TextView
-                android:layout_gravity="start"
-                style="@style/PortionHeading"
-                android:text="Scans per test"/>
-            <View
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#bfbfb4" />
 
-            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                android:id="@+id/seekBarScansCount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dsb_indicatorElevation="0dp"
-                app:dsb_mirrorForRtl="true"
-                app:dsb_rippleColor="@android:color/transparent"
-                app:dsb_min="0"
-                app:dsb_max="10"
-                app:dsb_value="1"
-                app:dsb_trackColor="#b9b9b9"
-                app:dsb_progressColor="#3daf64"
-                app:dsb_indicatorColor="#3daf64"
-                app:dsb_thumbSize="4dp"
-                app:dsb_trackHeight="4dp"
-                app:dsb_scrubberHeight="4dp"
-                app:dsb_indicatorSeparation="4dp"
-                android:layout_margin="10dp"/>
 
 
             <TextView

@@ -405,26 +405,11 @@ public class NewTestActivity extends AppActivity {
 
             @Override
             public void onError() {
-                //// regenerateTokenRequest();
+                progressBarCollection.setVisibility(View.GONE);
+                getCollections();
             }
 
-//            private void regenerateTokenRequest() {
-//                Log.d("Token","Regenerated");
-//                Map<String, String> params = new HashMap<>();
-//                params.put("email",sessionService.getUsername());
-//                params.put("password", sessionService.getPassword());
-//                foodScanService.login(params, new FoodScanHandler() {
-//                    @Override
-//                    public void onSuccess(JSONObject jsonObject) {
-//                        try {
-//                            sessionService.setUserToken(jsonObject.getString("token"));
-//                            getCollections();
-//                        } catch (JSONException e) { }
-//                    }
-//                    @Override
-//                    public void onError() {}
-//                });
-//            }
+
         });
     }
 

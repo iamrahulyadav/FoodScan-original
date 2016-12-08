@@ -154,6 +154,12 @@ public class TestResultsActivity extends AppActivity {
                 estimationModelView.setModelRecords(list,collectionId);
                 modelsDescriptionCont.addView(estimationModelView);
                 break ;
+
+            case "empty-estimation" :
+                EstimationModelDetailsView emptyEstimationModelView  = new EstimationModelDetailsView(getApplicationContext());
+                emptyEstimationModelView.setNotEstimationModelRecord(list);
+                modelsDescriptionCont.addView(emptyEstimationModelView);
+                break ;
         }
     }
 
