@@ -643,7 +643,7 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
                 Log.d("Analyse Result", msg);
                 statusView.setStatusCode(0);
                 statusView.setBGColor();
-                statusView.setStatusMessage("Analyze failed");
+                statusView.setStatusMessage("Analyse failed");
                 statusView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

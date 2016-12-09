@@ -211,14 +211,14 @@ public class TestDetailForAnalyseActivity extends AppActivity {
                             Log.d("Analyse Result", msg);
                             statusView.setStatusCode(0);
                             statusView.setBGColor();
-                            statusView.setStatusMessage("Analyze failed");
+                            statusView.setStatusMessage("Analyse failed");
                             statusView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     statusView.hide();
                                 }
                             });
-                            Toast.makeText(_this, "Analyze failed", Toast.LENGTH_SHORT);
+                            Toast.makeText(_this, "Analyse failed", Toast.LENGTH_SHORT);
                             // showError(code, msg);
                         }
                     });
