@@ -16,8 +16,9 @@
     <string name="help">Help</string>
     <string name="buy_product">Buy Product</string>
     <string name="version_info">Version Info</string>
-    <string name="top_up">Top up</string>
-    <string name="logout">Logout</string>
+   <string name="top_up">Top up</string>
+    <string name="login">Login</string>
+     <string name="logout">Logout</string>
     <string name="spinner_model_default">Add Another</string>
 
 </resources>

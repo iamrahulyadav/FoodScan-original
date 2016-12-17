@@ -13,4 +13,8 @@
         android:id="@+id/action_help"
         android:title="@string/help">
     </item>
+    <item
+        android:id="@+id/action_login"
+        android:title="@string/login">
+    </item>
 </menu>

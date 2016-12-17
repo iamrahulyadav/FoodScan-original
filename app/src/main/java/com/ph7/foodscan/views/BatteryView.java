@@ -77,7 +77,6 @@ public class BatteryView extends RelativeLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-       // configureBatteryStatus();
     }
 
     private void init()    {

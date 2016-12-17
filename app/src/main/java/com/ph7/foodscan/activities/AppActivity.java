@@ -160,7 +160,10 @@ public class AppActivity extends AppCompatActivity  {
             case android.R.id.home:
                 finish();
                 break;
-
+            case R.id.action_login:
+                startActivity(new Intent(AppActivity.this,CPLoginActivity.class)) ;
+                finish();
+                break;
             default:
                 break;
         }

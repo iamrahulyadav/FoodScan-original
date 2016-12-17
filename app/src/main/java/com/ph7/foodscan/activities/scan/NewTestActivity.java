@@ -129,7 +129,7 @@ public class NewTestActivity extends AppActivity {
                 if(i>0)
                 {
                     model = models.get(i-1);
-                    multipleModels.add(model);
+                   // multipleModels.add(model);
                     addAnotherModelCollection();
                     checkBlankFieldValidation();
                 }
@@ -177,7 +177,7 @@ public class NewTestActivity extends AppActivity {
                 if(i>0)
                 {
                     model = models.get(i-1);
-                    multipleModels.add(model);
+                   // multipleModels.add(model);
                     addAnotherModelCollection();
                 }
                 else
@@ -255,9 +255,29 @@ public class NewTestActivity extends AppActivity {
                     return ;
                 }
 
+                getSelectedModels();
+
                 _this.scan();
             }
         });
+    }
+    private void getSelectedModels() {
+        multipleModels.clear();
+        if(modelList.getSelectedItemPosition()>0)
+        {
+            multipleModels.add((ScioCollectionModel) modelList.getSelectedItem());
+        }
+        int countModelDD =  selectedModelsContainer.getChildCount() ;
+        for (int indexdd = 0; indexdd < countModelDD; indexdd++) {
+            Spinner spinner = (Spinner) selectedModelsContainer.getChildAt(indexdd);
+            int indexSelectedModel  =  spinner.getSelectedItemPosition() ;
+            if(indexSelectedModel>0)
+            {
+                multipleModels.add((ScioCollectionModel) spinner.getSelectedItem());
+            }
+
+        }
+
     }
 
     private void setupCalibrateButton() {
