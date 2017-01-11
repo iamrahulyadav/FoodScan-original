@@ -125,6 +125,12 @@ public class CollectionModelSelectionActivity extends AppActivity {
 
 
     private void getCollections() {
+
+        if(sessionService ==null || sessionService.getUserToken() ==null|| sessionService.getUserToken().trim().isEmpty())
+        {
+            return ;
+        }
+
         // New
         //getCollectionFromCPForSpecificUser();
 //

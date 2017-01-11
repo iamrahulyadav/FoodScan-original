@@ -141,10 +141,7 @@
         <activity
             android:name="com.ph7.foodscan.activities.scan.CollectionModelSelectionActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:label="@string/buy_product"
-            android:name="com.ph7.foodscan.activities.purchase.PurchaseProductScreen"
-            android:theme="@style/GreenTheme" />
+
     </application>
 
 </manifest>

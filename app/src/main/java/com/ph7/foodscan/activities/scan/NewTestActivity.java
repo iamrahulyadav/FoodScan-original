@@ -145,6 +145,7 @@ public class NewTestActivity extends AppActivity {
         });
 
         this.setupSoundPool();
+
         this.getCollections();
         this.setupScanSeekBaar();
         this.setupScanButton();
@@ -400,6 +401,12 @@ public class NewTestActivity extends AppActivity {
     }
 
     private void getCollections() {
+        if(sessionService ==null || sessionService.getUserToken() ==null|| sessionService.getUserToken().trim().isEmpty())
+        {
+            return ;
+        }
+
+
         progressBarCollection.setVisibility(View.VISIBLE);
 
         //get Collection n=and model from CP server for Specific User login
