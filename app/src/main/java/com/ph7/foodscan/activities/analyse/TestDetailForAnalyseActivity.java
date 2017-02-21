@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.consumerphysics.android.sdk.model.ScioReading;
+import com.gc.materialdesign.utils.Utils;
 import com.ph7.foodscan.R;
 import com.ph7.foodscan.activities.AppActivity;
 import com.ph7.foodscan.activities.scan.CollectionModelSelectionActivity;
@@ -54,6 +55,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.internal.Util;
 
 public class TestDetailForAnalyseActivity extends AppActivity {
 
@@ -245,7 +248,7 @@ public class TestDetailForAnalyseActivity extends AppActivity {
         for (Map.Entry<ScioReading,HashSet<Model>> entry : models.entrySet()) {
             HashSet<Model> modelsList = entry.getValue();
             for (Model model :modelsList) {
-                model.setCollectionName(collectionName);
+              //  model.setCollectionName(collectionName);
                 this.scanBundle.updateScan(entry.getKey(), model);
             }
         }
@@ -286,12 +289,13 @@ public class TestDetailForAnalyseActivity extends AppActivity {
                     JSONObject jObj = modelsArr.getJSONObject(indexModel);
                     String modelName =  jObj.getString("name") ;
                     String modelId =  jObj.getString("uuid") ;
+                    String source =  jObj.getString("source") ;
                     TextView modelView =  new TextView(getApplicationContext());
                     modelView.setText(modelName);
                     modelView.setTextSize(20f);
                     modelView.setTextColor(Color.parseColor("#484843"));
                     selectedModelsContainer.addView(modelView);
-                    ScioCollectionModel scioCollectionModel =  new ScioCollectionModel(modelName,modelId);
+                    ScioCollectionModel scioCollectionModel =  new ScioCollectionModel(modelName,modelId,"",source);
                     models.add(scioCollectionModel);
                 }
             }
@@ -477,7 +481,7 @@ public class TestDetailForAnalyseActivity extends AppActivity {
                 final ArrayList<ScioCollectionModel> models = data.getParcelableArrayListExtra("models");
                 ScioCollection collection = data.getParcelableExtra("collection");
                 try {
-                    scanResults.collection_id  = createCollectionJson(collection);
+                    scanResults.collection_id  = "";//createCollectionJson(collection);
                     scanResults.model_ids = createModelsJson(models);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -485,7 +489,7 @@ public class TestDetailForAnalyseActivity extends AppActivity {
 
                 setupModels();
                 setupCollection();
-                this.scanBundle.setCollectionUuid(collection.getUuid());
+                this.scanBundle.setCollectionUuid("dfdasfsdf"); //collection.getUuid()); [testing]
             }
         }
     }
@@ -511,7 +515,7 @@ public class TestDetailForAnalyseActivity extends AppActivity {
             JSONObject modelJsonObj  =  new JSONObject();
             modelJsonObj.put("name",scioCollectionModel.getName());
             modelJsonObj.put("uuid", scioCollectionModel.getUuid());
-
+            modelJsonObj.put("source",scioCollectionModel.getSrc()) ;
             root.put(modelJsonObj);
         }
         return root.toString() ;

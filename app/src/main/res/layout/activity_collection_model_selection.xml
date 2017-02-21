@@ -135,11 +135,13 @@
 
 
             <TextView
+                android:visibility="gone"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="start"
                 style="@style/PortionHeading"
                 android:text="Collections"/>
             <View
+                android:visibility="gone"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
@@ -147,6 +149,7 @@
                 android:background="#bfbfb4" />
 
             <Spinner
+                android:visibility="gone"
                 style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                 android:id="@+id/collectionList"
                 android:spinnerMode="dropdown"

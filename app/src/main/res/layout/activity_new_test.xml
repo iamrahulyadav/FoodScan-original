@@ -98,9 +98,9 @@
             app:dsb_trackColor="#b9b9b9"
             app:dsb_progressColor="#3daf64"
             app:dsb_indicatorColor="#3daf64"
-            app:dsb_thumbSize="4dp"
-            app:dsb_trackHeight="4dp"
-            app:dsb_scrubberHeight="4dp"
+            app:dsb_thumbSize="10dp"
+            app:dsb_trackHeight="10dp"
+            app:dsb_scrubberHeight="10dp"
             app:dsb_indicatorSeparation="4dp"
             android:layout_margin="10dp"/>
 
@@ -120,17 +120,20 @@
 
 
             <TextView
+                android:visibility="gone"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="start"
                 style="@style/PortionHeading"
                 android:text="Collections"/>
             <View
+                android:visibility="gone"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#bfbfb4" />
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <Spinner
@@ -144,14 +147,7 @@
                     android:layout_marginEnd="30dp"
                     android:layout_height="wrap_content" />
 
-                <ProgressBar
-                    style="?android:attr/progressBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/progressBarCollection"
-                    android:visibility="gone"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+
 
             </RelativeLayout>
 
@@ -167,16 +163,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#bfbfb4" />
-            <Spinner
-                android:spinnerMode="dropdown"
-                style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-                android:id="@+id/modelList"
+            <RelativeLayout
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"/>
+                android:layout_height="wrap_content">
+                <Spinner
+                    android:spinnerMode="dropdown"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                    android:id="@+id/modelList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"/>
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/progressBarCollection"
+                    android:visibility="gone"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true" />
+            </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/selectedModelsContainer"
                 android:layout_width="match_parent"

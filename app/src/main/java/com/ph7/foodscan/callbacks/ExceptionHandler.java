@@ -3,6 +3,7 @@ package com.ph7.foodscan.callbacks;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -26,7 +27,15 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         errorReport.append("************ CAUSE OF ERROR ************\n\n");
         errorReport.append(stackTrace.toString());
 
-
+        errorReport.append("\n\n************ Device Information ************\n\n");
+        String PhoneModel = android.os.Build.MODEL;
+        errorReport.append("Phone Model  : ").append(PhoneModel).append("\n");
+        String AndroidVersion = android.os.Build.VERSION.RELEASE;
+        errorReport.append("Android Version  : ").append(AndroidVersion).append("\n");
+        String incremental = Build.VERSION.INCREMENTAL;
+        errorReport.append("Android Incremental Version  : ").append(incremental).append("\n");
+        String release = Build.VERSION.RELEASE;
+        errorReport.append("Android release Version  : ").append(release).append("\n");
 
         String[] to  ={"atul@askonlinesolutions.com"};
         Intent intent = new Intent(Intent.ACTION_SEND);

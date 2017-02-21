@@ -245,7 +245,7 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
         }
 
         try {
-            setCollection(collection_id) ;
+           // setCollection(collection_id) ;
             setCollectionModels(model_ids) ;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -293,7 +293,8 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
             JSONObject modelJObj  = modelJArr.getJSONObject(indexModel) ;
             String modelName  =  modelJObj.getString("name") ;
             String modelUUID  =  modelJObj.getString("uuid") ;
-            ScioCollectionModel model = new ScioCollectionModel(modelName,modelUUID) ;
+            String modelSource  =  modelJObj.getString("source") ;
+            ScioCollectionModel model = new ScioCollectionModel(modelName,modelUUID,"",modelSource) ;
             models.add(model);
         }
     }
@@ -560,7 +561,6 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
             Scan scan = new Scan(scioReading);
             this.scanBundle.addScan(scan);
         }
-
     }
 
 
@@ -710,7 +710,7 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
         for (Map.Entry<ScioReading,HashSet<Model>> entry : models.entrySet()) {
             HashSet<Model> modelsList = entry.getValue();
             for (Model model :modelsList) {
-                model.setCollectionName(this.collection.getName());
+                model.setCollectionName("");//this.collection.getName());  // 16-02-17
                 this.scanBundle.updateScan(entry.getKey(), model);
             }
         }

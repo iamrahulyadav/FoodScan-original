@@ -33,6 +33,8 @@ public class AnalyzerService implements AnalyzerInterface {
         this.scioCloud = new ScioCloud(FoodScanApplication.getAppContext());
     }
 
+
+    //Not used
     public void analyze(ScioReading scioReading, final ScioCollectionModel model, final ScioCloudAnalyzeCallback callback) {
         this.scioCloud.analyze(scioReading, model.getUuid(), new com.consumerphysics.android.sdk.callback.cloud.ScioCloudAnalyzeCallback() {
             @Override
@@ -48,45 +50,6 @@ public class AnalyzerService implements AnalyzerInterface {
         });
     }
 
-    HashMap<String,String> modelMapping  = new HashMap<>();
-    public void analyze(final ScioReading scioReading, final List<ScioCollectionModel> models, final ScioCloudAnalyzeCallback callback) {
-
-        List<String> modelIds = new ArrayList<>();
-        for (ScioCollectionModel model : models) {
-            modelIds.add(model.getUuid());
-            modelMapping.put(model.getUuid(),model.getName());
-        }
-
-        this.scioCloud.analyze(scioReading, modelIds, new com.consumerphysics.android.sdk.callback.cloud.ScioCloudAnalyzeManyCallback() {
-            @Override
-            public void onSuccess(List<ScioModel> list) {
-
-                for (ScioModel model : list) {
-                    Model returnModel = new Model(model);
-                    // Check n Replace Model Name Value
-                    if(modelMapping.containsKey(returnModel.getId()))
-                    {
-                        returnModel.setName(modelMapping.get(returnModel.getId())) ;
-                    }
-                    callback.onSuccess(returnModel);
-                }
-                Log.d("Analyze","Reading "+analyzeCount);
-                --analyzeCount;
-                if (analyzeCount<=0) {
-                    Log.d("Analyze","*** Complete ***");
-                   // callBackLookup.onSuccess(modelsLookups);
-                    callBackModelSetLookup.onSuccess(modelSetLookups);
-                }
-
-            }
-
-
-            @Override
-            public void onError(int i, String s) {
-                callback.onError(i, s);
-            }
-        });
-    }
 // not Used
     @Override
     public void analyze(final List<ScioReading> scioReadings, final ScioCollectionModel model, final ScioCloudAnalyzeManyCallback callback) {
@@ -123,8 +86,8 @@ public class AnalyzerService implements AnalyzerInterface {
     }
 
     final Map<ScioReading, Model> modelsLookups = new HashMap<>();
-    // Not Using
 
+    // Not Using
     @Override
     public void analyze(final List<ScioReading> scioReadings, final List<ScioCollectionModel> models, ScioCloudAnalyzeManyCallback callback) {
         modelsLookups.clear();
@@ -145,8 +108,53 @@ public class AnalyzerService implements AnalyzerInterface {
             });
         }
     }
-    // Latest that is using
 
+
+    // Latest this is Using
+    HashMap<String,String> modelMapping  = new HashMap<>();
+    HashMap<String,String> sourceMapping  = new HashMap<>(); // 16-02-17
+    public void analyze(final ScioReading scioReading, final List<ScioCollectionModel> models, final ScioCloudAnalyzeCallback callback) {
+
+        List<String> modelIds = new ArrayList<>();
+        for (ScioCollectionModel model : models) {
+            modelIds.add(model.getUuid());
+            modelMapping.put(model.getUuid(),model.getName());
+            sourceMapping.put(model.getUuid(),model.getSrc());
+        }
+
+        this.scioCloud.analyze(scioReading, modelIds, new com.consumerphysics.android.sdk.callback.cloud.ScioCloudAnalyzeManyCallback() {
+            @Override
+            public void onSuccess(List<ScioModel> list) {
+
+                for (ScioModel model : list) {
+                    Model returnModel = new Model(model);
+                    // Check n Replace Model Name Value
+                    if(modelMapping.containsKey(returnModel.getId()))
+                    {
+                        returnModel.setName(modelMapping.get(returnModel.getId())) ;
+                    }
+                    returnModel.setSource(sourceMapping.get(returnModel.getId())); // 16-02-17
+                    callback.onSuccess(returnModel);
+                }
+                Log.d("Analyze","Reading "+analyzeCount);
+                --analyzeCount;
+                if (analyzeCount<=0) {
+                    Log.d("Analyze","*** Complete ***");
+                    // callBackLookup.onSuccess(modelsLookups);
+                    callBackModelSetLookup.onSuccess(modelSetLookups);
+                }
+
+            }
+
+
+            @Override
+            public void onError(int i, String s) {
+                callback.onError(i, s);
+            }
+        });
+    }
+
+    // Latest that is using
     final Map<ScioReading, HashSet<Model>> modelSetLookups = new HashMap<>();
     @Override
     public void analyze(List<ScioReading> scioReadings, List<ScioCollectionModel> models, ScioCloudAnalyzeManyModelCallback callback) {

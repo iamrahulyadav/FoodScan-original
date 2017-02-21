@@ -24,6 +24,8 @@ public class Model {
   // private boolean confidence;
     private ScioModel.Type type;
 
+    private String source ;
+
     public Model(ScioModel scioModel) {
         this.id = scioModel.getId();
         this.name = scioModel.getName();
@@ -48,6 +50,7 @@ public class Model {
         }
 
         this.setModelAttributes(scioModel.getAttributes());
+
     }
 
     public Model() {
@@ -103,5 +106,13 @@ public class Model {
 
     public void addAttributes(List<ScioModelAttribute> attributes) {
         this.attributes.addAll(attributes);
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

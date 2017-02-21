@@ -404,7 +404,6 @@ public class AppActivity extends AppCompatActivity  {
 
 
 
-
 }
 
 

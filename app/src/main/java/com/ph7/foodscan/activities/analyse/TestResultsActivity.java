@@ -77,7 +77,7 @@ public class TestResultsActivity extends AppActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        parseCollectionId();
+      //  parseCollectionId();
         setupModels();
 
         //

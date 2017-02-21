@@ -48,10 +48,10 @@ public class SessionService {
     }
 
     public void setUserToken(String token) {
-        this.preferences.edit().putString("AnalyserForSCIOToken", token).commit();
+        this.preferences.edit().putString("AnalyserForSCIOToken", token).apply();
         long currMillis =  Calendar.getInstance().getTime().getTime();
         long expire =  currMillis + 2419200000L  ; // 28 days
-        this.preferences.edit().putLong("expire",expire).commit();
+        this.preferences.edit().putLong("expire",expire).apply();
     }
 
     public boolean isExpireAccessToken()
@@ -63,8 +63,8 @@ public class SessionService {
 
     public void setScioDevice(String deviceId,String deviceName)
     {
-        this.preferences.edit().putString("device_id",deviceId).commit();
-        this.preferences.edit().putString("device_name",deviceName).commit();
+        this.preferences.edit().putString("device_id",deviceId).apply();
+        this.preferences.edit().putString("device_name",deviceName).apply();
     }
 
     public  String getScioDeviceId()
@@ -83,6 +83,7 @@ public class SessionService {
         editor.remove("AnalyserForSCIOToken").apply();
         editor.remove("username").apply();
         editor.remove("password").apply();
+        editor.remove("expire").apply();
     }
 
     public Boolean isSoundTurnedOn() {

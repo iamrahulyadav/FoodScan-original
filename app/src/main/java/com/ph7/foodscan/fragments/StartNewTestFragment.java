@@ -36,6 +36,7 @@ import com.consumerphysics.android.sdk.model.ScioBattery;
 import com.ph7.foodscan.R;
 import com.ph7.foodscan.activities.AppActivity;
 import com.ph7.foodscan.activities.main.DashboardActivity;
+import com.ph7.foodscan.activities.main.DiscoverDevicesActivity;
 import com.ph7.foodscan.activities.main.MyTestsActivity;
 import com.ph7.foodscan.application.FoodScanApplication;
 import com.ph7.foodscan.callbacks.DeviceConnectHandler;
@@ -77,6 +78,7 @@ public class StartNewTestFragment extends Fragment {
     private ArrayList<SCIOResultDataModel> listNotAnalysedData = null;
     private ArrayList<SCIOResultDataModel> listAnalysedData = null;
 
+    private boolean isConnecting = false;
     private BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -85,17 +87,21 @@ public class StartNewTestFragment extends Fragment {
             if (BluetoothDevice.ACTION_FOUND.equals(actionName)) {
                 Log.d("FoodScan","Action : "+actionName);
                 final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                Log.d("FoodScan_Bluetooth","Device Founded : Device Name => "+device.getName()+" Address => "+device.getAddress());
                 if (device.getName() != null && device.getName().startsWith("SCiO")) {
                     final String deviceName = device.getName().substring(4);
-                    Log.d("AppActivity : deviceId",device.getAddress());
+                    Log.d("FoodScan_Bluetooth", "deviceId : "+device.getAddress());
                     if(device.getAddress().equals(sessionService.getScioDeviceId()))
                     {
+                        isConnecting = true  ; // Change 09-02-17
+                        Log.d("FoodScan_Bluetooth","Connecting... with "+device.getName());
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 FoodScanApplication.getDeviceHandler().setDevice(false ,new com.ph7.foodscan.device.BluetoothDevice(device.getAddress(),deviceName), new DeviceConnectHandler() {
                                     @Override
                                     public void onConnect() {
+                                        Log.d("FoodScan_Bluetooth","Connected...");
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
@@ -112,9 +118,53 @@ public class StartNewTestFragment extends Fragment {
                         });
 
                     }
+                    else {
+                        Log.d("FoodScan_Bluetooth","Bluetooth timeout start (10 sec).");
+                        // Change 09-02-17
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(!isConnecting)
+                                {
+                                    Log.d("FoodScan_Bluetooth","Saved Device not found Yet !");
+                                    Snackbar.make(ivBatteryStatus,sessionService.getScioDeviceName()+
+                                            " is not found yet.\nPress Ok ,for searching another device.",Snackbar.LENGTH_INDEFINITE)
+                                            .setAction("Ok", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    isConnecting = false ;
+                                                    newTestHandler.onNeedsDevice();
+                                                }
+                                            }).show();
+//                                    AlertDialog.Builder builder =  new AlertDialog.Builder(getActivity());
+//                                    builder.setMessage(sessionService.getScioDeviceName()+" is not found yet.\nPress Ok ,for searching another device.");
+//                                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            newTestHandler.onNeedsDevice();
+//                                            dialog.dismiss();
+//                                        }
+//                                    });
+//
+//                                    builder.create() ;
+//                                    builder.show() ;
+                                }
+                                else{
+                                    isConnecting = false ;
+                                    Log.d("FoodScan_Bluetooth","Already Connected");
+                                }
+                            }
+                        },10000);
+                        // Change 09-02-17
+                    }
 
                 }
-                else { Log.d("MyTag", "device.getName() is null");}
+                else {
+                    Log.d("MyTag", "device.getName() is null");
+                }
+            }
+            else{
+                Log.d("FoodScan_Bluetooth","Action : "+actionName);
             }
 
 
@@ -122,6 +172,7 @@ public class StartNewTestFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        isConnecting = false ;
                         refresh();
                     }
                 },1000);
@@ -502,6 +553,7 @@ public class StartNewTestFragment extends Fragment {
     }
 
     public void refresh() {
+
         final View view =  this.getView() ;
         if(view!=null) this.configureView(view);
 
@@ -516,6 +568,7 @@ public class StartNewTestFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        isConnecting = false ;// Change 09-02-17
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);

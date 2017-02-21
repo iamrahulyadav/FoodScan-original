@@ -4,11 +4,14 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -40,6 +43,7 @@ import com.ph7.foodscan.views.ShadowedButton;
 import com.ph7.foodscan.views.StatusView;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -128,8 +132,9 @@ public class NewTestActivity extends AppActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i>0)
                 {
-                    model = models.get(i-1);
-                   // multipleModels.add(model);
+                    //model = models.get(i-1);
+                    model = (ScioCollectionModel) ((AppCompatSpinner) adapterView).getAdapter().getItem(i);
+                    // multipleModels.add(model);
                     addAnotherModelCollection();
                     checkBlankFieldValidation();
                 }
@@ -145,15 +150,64 @@ public class NewTestActivity extends AppActivity {
         });
 
         this.setupSoundPool();
-
-        this.getCollections();
+        this.getModels();
+        //this.getCollections();
         this.setupScanSeekBaar();
         this.setupScanButton();
         this.setupCalibrateButton();
         // checkBlankFieldValidation();
     }
 
+    private void getModels() {
+        if(sessionService ==null || sessionService.getUserToken() ==null|| sessionService.getUserToken().trim().isEmpty())
+        {
+            return ;
+        }
 
+
+        progressBarCollection.setVisibility(View.VISIBLE);
+
+        //get Collection n=and model from CP server for Specific User login
+        // getCollectionFromCPForSpecificUser();
+
+        // get Collection From Food Scan Server
+        this.foodScanService.getModels(new FoodScanHandler() {
+            @Override
+            public void onSuccess(JSONObject object) {
+                progressBarCollection.setVisibility(View.GONE);
+                modelAdapter.clear();
+                ScioCollectionModel scioCollectionModel = new ScioCollectionModel("Choose a model");
+                modelAdapter.add(scioCollectionModel);
+                selectedModelsContainer.removeAllViews();
+                multipleModels.clear();
+                checkBlankFieldValidation();
+
+                try {
+                    JSONArray modelsJsonArr  = object.getJSONArray("models");
+                    for (int indexModelJsonObj = 0; indexModelJsonObj < modelsJsonArr.length(); indexModelJsonObj++) {
+                        JSONObject modelJsonObj  =  modelsJsonArr.getJSONObject(indexModelJsonObj) ;
+                        String uuid = modelJsonObj.getString("uuid");
+                        String name  = modelJsonObj.getString("name");
+                        String src = modelJsonObj.getString("source");
+                        String type  =  modelJsonObj.getString("type");
+                        ScioCollectionModel scioModel = new ScioCollectionModel(name,uuid,type,src);
+                        modelAdapter.add(scioModel);
+                        models.add(scioModel);
+                    }
+                } catch (JSONException e) {
+                    models = new ArrayList<>();
+                }
+                modelAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onError() {
+                progressBarCollection.setVisibility(View.GONE);
+                getModels();
+            }
+        });
+    }
 
     private void addAnotherModelCollection() {
         // Spinner spinner =  new Spinner();
@@ -178,7 +232,7 @@ public class NewTestActivity extends AppActivity {
                 if(i>0)
                 {
                     model = models.get(i-1);
-                   // multipleModels.add(model);
+                    // multipleModels.add(model);
                     addAnotherModelCollection();
                 }
                 else
@@ -199,7 +253,25 @@ public class NewTestActivity extends AppActivity {
         seekBarScansCount = (DiscreteSeekBar) findViewById(R.id.seekBarScansCount);
         final NewTestActivity _this = this;
 
+        seekBarScansCount.post(new Runnable() {
+            public void run() {
+                // Post in the parent's message queue to make sure the parent
+                // lays out its children before we call getHitRect()
+                Rect delegateArea = new Rect();
 
+                seekBarScansCount.getHitRect(delegateArea);
+                delegateArea.top -= 100;
+                delegateArea.bottom += 50;
+                TouchDelegate expandedArea = new TouchDelegate(delegateArea,
+                        seekBarScansCount);
+                // give the delegate to an ancestor of the view we're
+                // delegating the
+                // area to
+                if (View.class.isInstance(seekBarScansCount.getParent())) {
+                    seekBarScansCount.setTouchDelegate(expandedArea);
+                }
+            }
+        });
 
         seekBarScansCount.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
@@ -360,7 +432,7 @@ public class NewTestActivity extends AppActivity {
                                 intent.putParcelableArrayListExtra("readings", (ArrayList<ScioReadingWrapper>)scioReadings);
                                 intent.putExtra("model", model);
                                 intent.putParcelableArrayListExtra("models", multipleModels);
-                                intent.putExtra("collection", collection);
+                                //intent.putExtra("collection", collection);  // [Latest]
                                 intent.putExtra("scans", scansCount);
                                 startActivity(intent);
                             }
@@ -400,45 +472,45 @@ public class NewTestActivity extends AppActivity {
         });
     }
 
-    private void getCollections() {
-        if(sessionService ==null || sessionService.getUserToken() ==null|| sessionService.getUserToken().trim().isEmpty())
-        {
-            return ;
-        }
-
-
-        progressBarCollection.setVisibility(View.VISIBLE);
-
-        //get Collection n=and model from CP server for Specific User login
-       // getCollectionFromCPForSpecificUser();
-
-        // get Collection From Food Scan Server
-        this.foodScanService.getCollections(new FoodScanHandler() {
-            @Override
-            public void onSuccess(JSONObject object) {
-                progressBarCollection.setVisibility(View.GONE);
-                try {
-                    collections = ScioCollection.fromJSON(object.getJSONArray("collections"));
-                } catch (JSONException e) {
-                    collections = new ArrayList<>();
-                }
-                collectionAdapter.clear();
-                ScioCollection scioCollection =  new ScioCollection("Choose a collection");
-                collectionAdapter.add(scioCollection);
-                collectionAdapter.addAll(collections);
-                collectionAdapter.notifyDataSetChanged();
-                collectionList.setSelection(0);
-            }
-
-            @Override
-            public void onError() {
-                progressBarCollection.setVisibility(View.GONE);
-                getCollections();
-            }
-
-
-        });
-    }
+//    private void getCollections() {
+//        if(sessionService ==null || sessionService.getUserToken() ==null|| sessionService.getUserToken().trim().isEmpty())
+//        {
+//            return ;
+//        }
+//
+//
+//        progressBarCollection.setVisibility(View.VISIBLE);
+//
+//        //get Collection n=and model from CP server for Specific User login
+//        // getCollectionFromCPForSpecificUser();
+//
+//        // get Collection From Food Scan Server
+//        this.foodScanService.getCollections(new FoodScanHandler() {
+//            @Override
+//            public void onSuccess(JSONObject object) {
+//                progressBarCollection.setVisibility(View.GONE);
+//                try {
+//                    collections = ScioCollection.fromJSON(object.getJSONArray("collections"));
+//                } catch (JSONException e) {
+//                    collections = new ArrayList<>();
+//                }
+//                collectionAdapter.clear();
+//                ScioCollection scioCollection =  new ScioCollection("Choose a collection");
+//                collectionAdapter.add(scioCollection);
+//                collectionAdapter.addAll(collections);
+//                collectionAdapter.notifyDataSetChanged();
+//                collectionList.setSelection(0);
+//            }
+//
+//            @Override
+//            public void onError() {
+//                progressBarCollection.setVisibility(View.GONE);
+//                getCollections();
+//            }
+//
+//
+//        });
+//    }
 
 //    private void getCollectionFromCPForSpecificUser() {
 //

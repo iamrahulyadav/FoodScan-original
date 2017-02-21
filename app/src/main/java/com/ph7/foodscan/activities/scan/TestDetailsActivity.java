@@ -106,7 +106,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
 
     private Uri imageUri;
     private ScanBundle scanBundle;
-    ScioCollection collection;
+    //ScioCollection collection; // [Latest]
     private Business selectedBusiness = null;
 
     private AnalyzerInterface analyzerService = FoodScanApplication.getAnalyzerService();
@@ -164,13 +164,14 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
         this.readings = (List<ScioReadingWrapper>) getIntent().getExtras().get("readings");
         //this.model = (ScioCollectionModel) getIntent().getExtras().get("model");
         this.models = (ArrayList<ScioCollectionModel>) getIntent().getExtras().get("models");
-        this.collection = (ScioCollection) getIntent().getExtras().get("collection");
+     //   this.collection = (ScioCollection) getIntent().getExtras().get("collection"); // [Latest]
         scans = (int)getIntent().getExtras().get("scans");
         String collectionName = "";
-        if(collection!= null)
+        // [Latest]
+      /*  if(collection!= null)
         {
             collectionName =  this.collection.getName()+"_" ;
-        }
+        }*/
         String test_name = collectionName + Calendar.getInstance().getTime().getTime()+"_"+scans;
         etTestName.setText(test_name);
         etTestName.setSelection(etTestName.getText().length());
@@ -297,7 +298,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
         String collectionJson  = "";
         try {
             models = createModelsJson();
-            collectionJson = createCollectionJson();
+            collectionJson = "";//createCollectionJson();//  // [Latest]
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -392,20 +393,20 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
         }
         return businessJOBj.toString();
     }
-
-    private String createCollectionJson() throws JSONException {
-        String jsonStr = "" ;
-        JSONObject root = new JSONObject();
-
-        ScioCollection modelCollection  =  this.collection ;
-        if(modelCollection!=null) {
-            root.put("name", modelCollection.getName());
-            root.put("uuid", modelCollection.getUuid());
-            jsonStr =  root.toString() ;
-        }
-
-        return jsonStr ;
-    }
+    // [Latest]
+//    private String createCollectionJson() throws JSONException {
+//        String jsonStr = "" ;
+//        JSONObject root = new JSONObject();
+//
+//        ScioCollection modelCollection  =  this.collection ;
+//        if(modelCollection!=null) {
+//            root.put("name", modelCollection.getName());
+//            root.put("uuid", modelCollection.getUuid());
+//            jsonStr =  root.toString() ;
+//        }
+//
+//        return jsonStr ;
+//    }
 
     private String createModelsJson() throws JSONException {
         JSONArray root =  new JSONArray();
@@ -414,7 +415,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
             JSONObject modelJsonObj  =  new JSONObject();
             modelJsonObj.put("name",scioCollectionModel.getName());
             modelJsonObj.put("uuid", scioCollectionModel.getUuid());
-
+            modelJsonObj.put("source",scioCollectionModel.getSrc()) ;
             root.put(modelJsonObj);
         }
         return root.toString() ;
@@ -423,7 +424,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
     private void setupBundle() {
         this.scanBundle = new ScanBundle();
         this.scanBundle.sample = new Sample();
-        if(this.collection!=null)  this.scanBundle.setCollectionUuid(this.collection.getUuid());
+       // if(this.collection!=null)  this.scanBundle.setCollectionUuid(this.collection.getUuid()); // [Latest]
         this.scanBundle.sample.setBusiness(this.selectedBusiness);
         for (ScioReadingWrapper scioReading: this.readings) {
             Scan scan = new Scan(scioReading);
@@ -549,7 +550,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
         String collectionJson  = "";
         try {
             models = createModelsJson();
-            collectionJson = createCollectionJson();
+            collectionJson = "";//createCollectionJson(); // [Latest]
         } catch (JSONException e) {
 
             e.printStackTrace();
@@ -584,7 +585,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
         for (Map.Entry<ScioReading,HashSet<Model>> entry : models.entrySet()) {
             HashSet<Model> modelsList = entry.getValue();
             for (Model model :modelsList) {
-                model.setCollectionName(this.collection.getName());
+              //  model.setCollectionName(this.collection.getName()); // [Latest]
                 this.scanBundle.updateScan(entry.getKey(), model);
             }
 
@@ -612,8 +613,6 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
     private void logScan(final StatusView statusView) {
         final TestDetailsActivity _this = this;
         Log.d("data", this.scanBundle.toJSON().toString());
-
-
         Map<String,String> paths =  new HashMap<>();
         int index=0 ;
         for (String imagePath:listImages) {
@@ -827,8 +826,8 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
             case REQUEST_COLLECTION_MODEL :
                 if(data!=null) {
                     this.models = data.getParcelableArrayListExtra("models");
-                    this.collection = data.getParcelableExtra("collection");
-                    this.scanBundle.setCollectionUuid(this.collection.getUuid());
+                  //  this.collection = data.getParcelableExtra("collection"); // [Latest]
+                    this.scanBundle.setCollectionUuid("");//this.collection.getUuid()); // [Latest]
                 }
                 break ;
 
@@ -1079,8 +1078,9 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
                                 _this.readings = scioReadings ;
                                 String collectionName = "";
                                 EditText etTestName  =  (EditText) _this.findViewById(R.id.etTestName);
-                                if(collection!= null)
-                                    collectionName =  _this.collection.getName()+"_" ;
+                                // [Latest]
+                                /*if(collection!= null)
+                                    collectionName =  _this.collection.getName()+"_" ;*/
                                 String test_name = collectionName + Calendar.getInstance().getTime().getTime()+"_"+scans;
                                 etTestName.setText(test_name);
                                 etTestName.setSelection(etTestName.getText().length());

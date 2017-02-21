@@ -40,7 +40,7 @@ public class FoodScanService implements FoodScanServiceInterface {
     private SessionService sessionService = new SessionService();
     private RequestQueue queue = Volley.newRequestQueue(FoodScanApplication.getAppContext());
     public URL serverURL = null;
-    private String version = "/v1-alpha";
+    private String version = "/v1";
 
     public FoodScanService() {
         try {
@@ -57,6 +57,7 @@ public class FoodScanService implements FoodScanServiceInterface {
         this.queue.add(request);
     }
 
+    //[Removed]
     @Override
     public void logScan(ScioTestResults testResults, FoodScanHandler handler) {
         String url = this.concatenate(this.serverURL, "/collection/" + testResults.getCollectionUuid() + "/scan").toString();
@@ -65,6 +66,7 @@ public class FoodScanService implements FoodScanServiceInterface {
         this.queue.add(request);
     }
 
+    //[Removed]
     @Override
     public void logScan(ScanBundle bundle, FoodScanHandler handler) {
         String url = this.concatenate(this.serverURL, "/collection/" + bundle.getCollectionUuid() + "/scan").toString();
@@ -76,7 +78,7 @@ public class FoodScanService implements FoodScanServiceInterface {
     public void logScan(ScanBundle bundle, Map<String,String> bodyParams, FoodScanHandler handler) {
         bodyParams.put("json",bundle.toJSON().toString());
         Log.d("json",bundle.toJSON().toString()) ;
-        String url = this.concatenate(this.serverURL, "/collection/" + bundle.getCollectionUuid() + "/scan").toString();
+        String url = this.concatenate(this.serverURL, "/test" ).toString();//+ bundle.getCollectionUuid() + "/scan").toString();
         FormParamsRequest request = this.formParamRequest(Request.Method.POST, url, bodyParams, handler);
         request.setUsesAuthentication(this.sessionService.getUserToken());
         this.queue.add(request);
@@ -118,6 +120,17 @@ public class FoodScanService implements FoodScanServiceInterface {
         request.setUsesAuthentication(this.sessionService.getUserToken());
         this.queue.add(request);
     }
+
+
+
+    public void getModels(FoodScanHandler handler) {
+        Map params = new HashMap<String, String>();
+        String url = this.concatenate(this.serverURL, "/model").toString();
+        ParamsRequest request = this.paramsRequest(Request.Method.GET, url, params, handler);
+        request.setUsesAuthentication(this.sessionService.getUserToken());
+        this.queue.add(request);
+    }
+
 
     @Override
     public void searchForImages(String collectionId, String modelId, String value, FoodScanHandler handler) {
@@ -218,11 +231,7 @@ public class FoodScanService implements FoodScanServiceInterface {
         });
     }
 
-
-
-
-    public class JsonRequest extends JsonObjectRequest
-    {
+    public class JsonRequest extends JsonObjectRequest    {
 
         boolean usesAuthentication = false;
         String authenticationToken = "";

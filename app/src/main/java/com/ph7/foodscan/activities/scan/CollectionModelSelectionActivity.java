@@ -20,6 +20,7 @@ import com.ph7.foodscan.models.ph7.ScioCollectionModel;
 import com.ph7.foodscan.services.FoodScanService;
 import com.ph7.foodscan.services.SessionService;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -105,7 +106,8 @@ public class CollectionModelSelectionActivity extends AppActivity {
 
             }
         });
-        this.getCollections();
+        //this.getCollections();// [Latest]
+        this.getModels();
         this.setupDoneButton();
     }
 
@@ -116,7 +118,7 @@ public class CollectionModelSelectionActivity extends AppActivity {
             public void onClick(View view) {
                 Intent result = new Intent();
                 result.putParcelableArrayListExtra("models", multipleModels);
-                result.putExtra("collection", collection);
+                //result.putExtra("collection", collection);
                 setResult(200,result);
                 finish();
             }
@@ -124,40 +126,90 @@ public class CollectionModelSelectionActivity extends AppActivity {
     }
 
 
-    private void getCollections() {
+//    private void getCollections() {
+//
+//        if(sessionService ==null || sessionService.getUserToken() ==null|| sessionService.getUserToken().trim().isEmpty())
+//        {
+//            return ;
+//        }
+//
+//        // New
+//        //getCollectionFromCPForSpecificUser();
+////
+//        // old
+//        this.foodScanService.getCollections(new FoodScanHandler() {
+//            @Override
+//            public void onSuccess(JSONObject object) {
+//                try {
+//
+//                    collections = ScioCollection.fromJSON(object.getJSONArray("collections"));
+//                } catch (JSONException e) {
+//                    collections = new ArrayList<>();
+//                }
+//                collectionAdapter.clear();
+//                ScioCollection scioCollection =  new ScioCollection("Choose a collection");
+//                collectionAdapter.add(scioCollection);
+//                collectionAdapter.addAll(collections);
+//                collectionAdapter.notifyDataSetChanged();
+//                collectionList.setSelection(0);
+//            }
+//
+//            @Override
+//            public void onError() {
+//                    //regenerateTokenRequest() ;
+//                getCollections();
+//            }
+//        });
+//    }
 
+    private void getModels() {
         if(sessionService ==null || sessionService.getUserToken() ==null|| sessionService.getUserToken().trim().isEmpty())
         {
             return ;
         }
 
-        // New
-        //getCollectionFromCPForSpecificUser();
-//
-        // old
-        this.foodScanService.getCollections(new FoodScanHandler() {
+        //get Collection n=and model from CP server for Specific User login
+        // getCollectionFromCPForSpecificUser();
+
+        // get Collection From Food Scan Server
+        this.foodScanService.getModels(new FoodScanHandler() {
             @Override
             public void onSuccess(JSONObject object) {
-                try {
 
-                    collections = ScioCollection.fromJSON(object.getJSONArray("collections"));
+                modelAdapter.clear();
+                ScioCollectionModel scioCollectionModel = new ScioCollectionModel("Choose a model");
+                modelAdapter.add(scioCollectionModel);
+                selectedModelsContainer.removeAllViews();
+                multipleModels.clear();
+                checkBlankFieldValidation();
+
+                try {
+                    JSONArray modelsJsonArr  = object.getJSONArray("models");
+                    for (int indexModelJsonObj = 0; indexModelJsonObj < modelsJsonArr.length(); indexModelJsonObj++) {
+                        JSONObject modelJsonObj  =  modelsJsonArr.getJSONObject(indexModelJsonObj) ;
+                        String uuid = modelJsonObj.getString("uuid");
+                        String name  = modelJsonObj.getString("name");
+                        String src = modelJsonObj.getString("source");
+                        String type  =  modelJsonObj.getString("type");
+                        ScioCollectionModel scioModel = new ScioCollectionModel(name,uuid,type,src);
+                        modelAdapter.add(scioModel);
+                        models.add(scioModel);
+                    }
                 } catch (JSONException e) {
-                    collections = new ArrayList<>();
+                    models = new ArrayList<>();
                 }
-                collectionAdapter.clear();
-                ScioCollection scioCollection =  new ScioCollection("Choose a collection");
-                collectionAdapter.add(scioCollection);
-                collectionAdapter.addAll(collections);
-                collectionAdapter.notifyDataSetChanged();
-                collectionList.setSelection(0);
+                modelAdapter.notifyDataSetChanged();
+
             }
 
             @Override
             public void onError() {
-                    //regenerateTokenRequest() ;
-                getCollections();
+                getModels();
             }
+
+
         });
+
     }
 
     private void getCollectionFromCPForSpecificUser() {
@@ -223,7 +275,6 @@ public class CollectionModelSelectionActivity extends AppActivity {
 //        });
 //    }
 
-
     private void addAnotherModelCollection() {
 
         Spinner spinner  = new Spinner(getApplicationContext());
@@ -266,7 +317,7 @@ public class CollectionModelSelectionActivity extends AppActivity {
 
         final TextView startTestButton = (TextView) findViewById(R.id.startTest);
 
-        if(this.modelList.getSelectedItemPosition()>0 && collectionList.getSelectedItemPosition()>0)
+        if(this.modelList.getSelectedItemPosition()>0 )
         {
             startTestButton.setEnabled(true);
         }
