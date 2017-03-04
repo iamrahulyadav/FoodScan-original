@@ -55,6 +55,7 @@ import com.ph7.foodscan.callbacks.ScanHandler;
 import com.ph7.foodscan.callbacks.ScanUpdateHandler;
 import com.ph7.foodscan.callbacks.ScioCloudAnalyzeManyModelCallback;
 import com.ph7.foodscan.models.ph7.Business;
+import com.ph7.foodscan.models.ph7.Device;
 import com.ph7.foodscan.models.ph7.Location;
 import com.ph7.foodscan.models.ph7.Sample;
 import com.ph7.foodscan.models.ph7.Scan;
@@ -486,6 +487,11 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
                         Toast.makeText(ReTestDetailsActivity.this, "Saved for later", Toast.LENGTH_SHORT).show();
                         break ;
 
+                    case "analyse"  :
+                        this.test_id = test_id ;
+                        Toast.makeText(ReTestDetailsActivity.this, "Saved for later", Toast.LENGTH_SHORT).show();  // [23-02-2017]
+                        break ;
+
                     default :
                         final StatusView statusView = new StatusView(ReTestDetailsActivity.this);
                         statusView.setStatusCode(1);
@@ -559,6 +565,13 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
         this.scanBundle.sample.setBusiness(this.selectedBusiness);
         for (ScioReadingWrapper scioReading: this.readings) {
             Scan scan = new Scan(scioReading);
+
+            // [04-03-2017]
+            String deviceName = FoodScanApplication.getDeviceHandler().getDeviceName() ;
+            String deviceAddress = FoodScanApplication.getDeviceHandler().getDeviceAddress() ;
+            Device device = new Device(deviceName,deviceAddress);
+            scan.addDevice(device);
+
             this.scanBundle.addScan(scan);
         }
     }
@@ -601,7 +614,7 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
                     Snackbar.make(view, "Please enter test name.", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
-
+                saveNGoToNext("analyse");
                 analyseReadings();
                 //    }
             }
@@ -750,7 +763,8 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
         foodScanService.logScan(this.scanBundle,paths, new FoodScanHandler() {
             @Override
             public void onSuccess(JSONObject object) {
-                saveAnalyseData(object.toString());
+               // saveAnalyseData(object.toString());
+                updateToAnalysedData(object.toString());
                 statusView.setStatusCode(1);
                 statusView.setBGColor();
                 statusView.setStatusMessage("Task complete");
@@ -873,6 +887,19 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    // [23-02-2017]
+    private void updateToAnalysedData(String result) {
+
+        final FCDBService fcdbService = new FCDBService(ReTestDetailsActivity.this);
+        String create_datetime = dateFormat.format(Calendar.getInstance().getTime());
+        String timeStamp  = String.valueOf(Calendar.getInstance().getTime().getTime());
+        if (fcdbService.updateTestScanToAnalyse(this.test_id,result,"","",create_datetime,timeStamp)) {
+            ScanStorageService storageService = new ScanStorageService();
+            storageService.deleteScanStorage(result);
+        }
+
     }
 
     private  void gallaryFun(){

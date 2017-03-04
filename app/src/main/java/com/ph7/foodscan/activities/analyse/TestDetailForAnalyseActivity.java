@@ -24,6 +24,7 @@ import com.ph7.foodscan.application.FoodScanApplication;
 import com.ph7.foodscan.callbacks.FoodScanHandler;
 import com.ph7.foodscan.callbacks.ScioCloudAnalyzeManyModelCallback;
 import com.ph7.foodscan.models.ph7.Business;
+import com.ph7.foodscan.models.ph7.Device;
 import com.ph7.foodscan.models.ph7.Location;
 import com.ph7.foodscan.models.ph7.Sample;
 import com.ph7.foodscan.models.ph7.Scan;
@@ -104,6 +105,13 @@ public class TestDetailForAnalyseActivity extends AppActivity {
         this.scanBundle.sample.setBusiness(business);
         for (ScioReadingWrapper scioReading: this.scioReadingWrappers) {
             Scan scan = new Scan(scioReading);
+
+            // [04-03-2017]
+            String deviceName = FoodScanApplication.getDeviceHandler().getDeviceName() ;
+            String deviceAddress = FoodScanApplication.getDeviceHandler().getDeviceAddress() ;
+            Device device = new Device(deviceName,deviceAddress);
+            scan.addDevice(device);
+
             this.scanBundle.addScan(scan);
         }
     }
@@ -221,7 +229,7 @@ public class TestDetailForAnalyseActivity extends AppActivity {
                                     statusView.hide();
                                 }
                             });
-                            Toast.makeText(_this, "Analyse failed", Toast.LENGTH_SHORT);
+                            Toast.makeText(_this, "Analyse failed", Toast.LENGTH_SHORT).show();
                             // showError(code, msg);
                         }
                     });

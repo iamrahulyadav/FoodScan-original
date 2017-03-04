@@ -22,6 +22,7 @@ public class Scan  {
 
     @Exclude
     ScioReading scioReading;
+     Device device;
 
     public Scan(ScioReadingWrapper scioReadingWrapper) {
         this.scioReading = scioReadingWrapper.scioReading;
@@ -47,4 +48,10 @@ public class Scan  {
     public void addModel(Model value) {
         this.models.add(value);
     }
+
+    // [04-3-2017]
+    public void addDevice(Device device){
+        this.device = device;
+    }
+
 }

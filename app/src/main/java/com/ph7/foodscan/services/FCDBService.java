@@ -100,8 +100,8 @@ public class FCDBService extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put("test_status", 1);
             values.put("test_scan_result", content);
-            values.put("model_ids", model_ids);
-            values.put("collection_id", collection_id);
+            if(!model_ids.trim().isEmpty()) values.put("model_ids", model_ids);
+            if(!collection_id.trim().isEmpty()) values.put("collection_id", collection_id);
           //  values.put("create_datetime", create_datetime);
            // values.put("timestamp", timestamp);
             // updating row

@@ -14,7 +14,10 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.gc.materialdesign.utils.Utils;
+import com.gc.materialdesign.widgets.ProgressDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -43,6 +46,7 @@ public class LocationActivity extends AppActivity implements GoogleApiClient.Con
     private SessionService sessionService = new SessionService() ;
     private GoogleApiClient googleApiClient;
     private android.location.Location lastKnownLocation;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,8 @@ public class LocationActivity extends AppActivity implements GoogleApiClient.Con
             }
         });
 
-
+        progressDialog  = new  ProgressDialog(LocationActivity.this,"Loading nearby businesses");
+        progressDialog.show();
         setupLocation();
         setupBusinessList();
     }
@@ -83,12 +88,16 @@ public class LocationActivity extends AppActivity implements GoogleApiClient.Con
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            dismissProgressDialog();
             return;
         }
         lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(
                 googleApiClient);
         if (lastKnownLocation != null) {
             this.reloadBusinesses();
+        }else{
+            dismissProgressDialog();
+            Toast.makeText(this, "Error finding current location", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -106,6 +115,7 @@ public class LocationActivity extends AppActivity implements GoogleApiClient.Con
 
         if(sessionService ==null || sessionService.getUserToken() ==null|| sessionService.getUserToken().trim().isEmpty())
         {
+            dismissProgressDialog();
             AlertDialog.Builder builder = new AlertDialog.Builder(LocationActivity.this);
             builder.setMessage("Food Scan Login required.");
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -127,23 +137,40 @@ public class LocationActivity extends AppActivity implements GoogleApiClient.Con
                 try {
                     JSONArray jsonBusinesses = object.getJSONArray("businesses");
                     List<Business> businesses = new ArrayList<>();
-
-                    for (Integer i=0; i < jsonBusinesses.length(); i++) {
-                        JSONObject jsonBusiness = jsonBusinesses.getJSONObject(i);
-                        Business business = new Business();
-                        business.setId(jsonBusiness.getInt("id"));
-                        business.setName(jsonBusiness.getString("name"));
-                        business.setAddress(jsonBusiness.getString("address"));
-                        JSONObject jsonLocation = jsonBusiness.getJSONObject("location");
-                        business.setLocation(new Location(jsonLocation.getDouble("lat"), jsonLocation.getDouble("lng")));
-                        businesses.add(business);
+                    if(jsonBusinesses.length()>0) {
+                        for (Integer i = 0; i < jsonBusinesses.length(); i++) {
+                            JSONObject jsonBusiness = jsonBusinesses.getJSONObject(i);
+                            Business business = new Business();
+                            business.setId(jsonBusiness.getInt("id"));
+                            business.setName(jsonBusiness.getString("name"));
+                            business.setAddress(jsonBusiness.getString("address"));
+                            JSONObject jsonLocation = jsonBusiness.getJSONObject("location");
+                            business.setLocation(new Location(jsonLocation.getDouble("lat"), jsonLocation.getDouble("lng")));
+                            businesses.add(business);
+                        }
+                        nearbyBusinesses = businesses ;
                     }
-                    nearbyBusinesses = businesses ;
-                } catch (JSONException e) {
-                    nearbyBusinesses = new ArrayList<Business>();
-                }
 
-                businessAdapter.addAll(nearbyBusinesses);
+                } catch (JSONException e) {
+                    nearbyBusinesses = new ArrayList<>();
+                }
+                dismissProgressDialog();
+                if(nearbyBusinesses.size()>0) {
+                    businessAdapter.addAll(nearbyBusinesses);
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LocationActivity.this);
+                    builder.setMessage("No near by business found!");
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.create() ;
+                    builder.show() ;
+                }
                 //TODO: Change this so it's not defaulting the selected business to the first one returned
 //                if (_this.nearbyBusinesses.size() > 0) {
 //                    _this.setSelectedBusiness(_this.nearbyBusinesses.get(0));
@@ -153,26 +180,26 @@ public class LocationActivity extends AppActivity implements GoogleApiClient.Con
 
             @Override
             public void onError() {
-                regenerateTokenRequest();
+                AlertDialog.Builder builder = new AlertDialog.Builder(LocationActivity.this);
+                builder.setMessage("Error in finding near by businesses!");
+                builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        reloadBusinesses();
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        dialog.dismiss();
+                    }
+                });
+                builder.create() ;
+                builder.show() ;
             }
 
-            private void regenerateTokenRequest() {
-                Log.d("Token","Regenerated");
-                Map<String, String> params = new HashMap<>();
-                params.put("email",sessionService.getUsername());
-                params.put("password", sessionService.getPassword());
-                foodScanService.login(params, new FoodScanHandler() {
-                    @Override
-                    public void onSuccess(JSONObject jsonObject) {
-                        try {
-                            sessionService.setUserToken(jsonObject.getString("token"));
-                            reloadBusinesses();
-                        } catch (JSONException e) { }
-                    }
-                    @Override
-                    public void onError() {}
-                });
-            }
         });
     }
 
@@ -191,5 +218,10 @@ public class LocationActivity extends AppActivity implements GoogleApiClient.Con
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return false;
+    }
+
+    private void dismissProgressDialog(){
+        if(progressDialog!=null)
+            progressDialog.dismiss();
     }
 }

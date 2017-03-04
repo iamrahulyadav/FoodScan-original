@@ -283,7 +283,8 @@
                         android:text="Recalibrate"/>
 
                     <ProgressBar
-                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_marginTop="10dp"
+                        style="?android:attr/progressBarStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/progressBar"
