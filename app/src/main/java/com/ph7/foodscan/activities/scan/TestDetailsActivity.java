@@ -536,65 +536,6 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
         });
     }
     String test_id ;
-    private void saveAnalyseData(String analysedData) {
-        final EditText etTestName =  (EditText) findViewById(R.id.etTestName) ;
-        final EditText etTestNote =  (EditText) findViewById(R.id.etTestNote) ;
-        test_id =  Validation.generateRandomString(15);
-        String test_name = etTestName.getText().toString().trim();
-        String test_note = etTestNote.getText().toString().trim() ;
-        String test_location= "";//etBusinessLocation.getText().toString().trim() ;
-        try {
-            test_location = createBusinessJSON();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("FoodScan","Test Location : "+test_location);
-        String create_datetime = dateFormat.format(Calendar.getInstance().getTime());
-        //create_datetime = create_datetime.replace(" "," at ");
-        String expire= "" ;
-        String imgs_path = "" ;
-
-        for (String imagePath:listImages) {
-            imgs_path = imgs_path+","+imagePath;
-        }
-        if(!imgs_path.isEmpty())
-        {
-            imgs_path = imgs_path.substring(1);
-        }
-
-        String models = "";
-        String collectionJson  = "";
-        try {
-            models = createModelsJson();
-            collectionJson = "";//createCollectionJson(); // [Latest]
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-        }
-        /// String analysedData = this.scanBundle.toJSON().toString();
-
-        FCDBService fcdbService = new FCDBService(getApplicationContext());
-        try {
-
-            String timeStamp  = String.valueOf(Calendar.getInstance().getTime().getTime());
-            if (fcdbService.saveTestAnalyse(test_id, test_name, test_note, test_location,
-                    models, collectionJson,analysedData, this.scans,create_datetime, expire, imgs_path,timeStamp)) {
-
-                Log.d("Success","Saved analysed data");
-            } else {
-                Log.d("Failed","Error in saving analysed data");
-            }
-
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        finally {
-            fcdbService.close();
-        }
-
-    }
 
     //New
     private void updateScan(Map<ScioReading, HashSet<Model>> models) {

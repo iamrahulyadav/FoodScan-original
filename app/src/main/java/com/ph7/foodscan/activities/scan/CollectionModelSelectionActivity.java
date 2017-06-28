@@ -126,41 +126,6 @@ public class CollectionModelSelectionActivity extends AppActivity {
     }
 
 
-//    private void getCollections() {
-//
-//        if(sessionService ==null || sessionService.getUserToken() ==null|| sessionService.getUserToken().trim().isEmpty())
-//        {
-//            return ;
-//        }
-//
-//        // New
-//        //getCollectionFromCPForSpecificUser();
-////
-//        // old
-//        this.foodScanService.getCollections(new FoodScanHandler() {
-//            @Override
-//            public void onSuccess(JSONObject object) {
-//                try {
-//
-//                    collections = ScioCollection.fromJSON(object.getJSONArray("collections"));
-//                } catch (JSONException e) {
-//                    collections = new ArrayList<>();
-//                }
-//                collectionAdapter.clear();
-//                ScioCollection scioCollection =  new ScioCollection("Choose a collection");
-//                collectionAdapter.add(scioCollection);
-//                collectionAdapter.addAll(collections);
-//                collectionAdapter.notifyDataSetChanged();
-//                collectionList.setSelection(0);
-//            }
-//
-//            @Override
-//            public void onError() {
-//                    //regenerateTokenRequest() ;
-//                getCollections();
-//            }
-//        });
-//    }
 
     private void getModels() {
         if(sessionService ==null || sessionService.getUserToken() ==null|| sessionService.getUserToken().trim().isEmpty())
@@ -257,23 +222,7 @@ public class CollectionModelSelectionActivity extends AppActivity {
         });
     }
 
-//    private void regenerateTokenRequest() {
-//        Log.d("Token","Regenerated");
-//        Map<String, String> params = new HashMap<>();
-//        params.put("email",sessionService.getUsername());
-//        params.put("password", sessionService.getPassword());
-//        foodScanService.login(params, new FoodScanHandler() {
-//            @Override
-//            public void onSuccess(JSONObject jsonObject) {
-//                try {
-//                    sessionService.setUserToken(jsonObject.getString("token"));
-//                    getCollections();
-//                } catch (JSONException e) { }
-//            }
-//            @Override
-//            public void onError() {}
-//        });
-//    }
+
 
     private void addAnotherModelCollection() {
 

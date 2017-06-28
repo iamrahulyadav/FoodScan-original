@@ -557,7 +557,6 @@ public class NewTestActivity extends AppActivity {
 //        });
 //    }
 
-
     private void checkBlankFieldValidation() {
 
         final TextView startTestButton = (TextView) findViewById(R.id.startTest);

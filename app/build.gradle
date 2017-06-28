@@ -8,8 +8,8 @@ android {
         applicationId "com.ph7.foodscan"
         minSdkVersion 18
         targetSdkVersion 24
-        versionCode 26
-        versionName "1.26"
+        versionCode 36
+        versionName "1.36"
         multiDexEnabled = true
     }
     buildTypes {

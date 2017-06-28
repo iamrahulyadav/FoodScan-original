@@ -10,6 +10,7 @@ import com.ph7.foodscan.callbacks.ScanUpdateHandler;
 import com.ph7.foodscan.callbacks.ScioDeviceScanHandler;
 import com.ph7.foodscan.models.ph7.ScioReadingWrapper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

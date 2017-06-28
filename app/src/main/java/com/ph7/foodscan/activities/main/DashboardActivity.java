@@ -47,15 +47,12 @@ public class DashboardActivity extends AppActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         newTestFragment.refresh();
     }
 
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
         if (requestCode == DiscoverDevicesActivity.PICK_DEVICE_REQUEST) {
             if (resultCode == RESULT_OK) {
                 newTestFragment.refresh();

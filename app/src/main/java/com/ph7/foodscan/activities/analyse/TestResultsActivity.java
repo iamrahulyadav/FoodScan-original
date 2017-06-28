@@ -87,6 +87,8 @@ public class TestResultsActivity extends AppActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater  =  getMenuInflater() ;
@@ -145,20 +147,26 @@ public class TestResultsActivity extends AppActivity {
         switch(type.toLowerCase()) {
             case "classification" :
                 ClassificationModelDetailsView modelDetailsView = new ClassificationModelDetailsView(getApplicationContext());
-                modelDetailsView.setModelRecords(list,collectionId);
+                modelDetailsView.setModelRecords(list,collectionId,test_id);
                 modelsDescriptionCont.addView(modelDetailsView);
                 break ;
 
             case "estimation" :
                 EstimationModelDetailsView estimationModelView  = new EstimationModelDetailsView(getApplicationContext());
-                estimationModelView.setModelRecords(list,collectionId);
+                estimationModelView.setModelRecords(list,collectionId,test_id);
                 modelsDescriptionCont.addView(estimationModelView);
                 break ;
 
             case "empty-estimation" :
                 EstimationModelDetailsView emptyEstimationModelView  = new EstimationModelDetailsView(getApplicationContext());
-                emptyEstimationModelView.setNotEstimationModelRecord(list);
+                emptyEstimationModelView.setNotEstimationModelRecord(list,test_id);
                 modelsDescriptionCont.addView(emptyEstimationModelView);
+                break ;
+
+            case "rmse-estimation" :
+                EstimationModelDetailsView rmseEstimationModelView  = new EstimationModelDetailsView(getApplicationContext());
+                rmseEstimationModelView.setModelRecords(list,collectionId,test_id);
+                modelsDescriptionCont.addView(rmseEstimationModelView);
                 break ;
         }
     }

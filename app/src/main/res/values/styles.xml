@@ -145,4 +145,8 @@
         <item name="android:textSize">17sp</item>
         <item name="android:layout_height">51dp</item>
     </style>
+    
+    <style name="FSSpinnerUnderlinedStyle" parent="Base.Widget.AppCompat.Spinner.Underlined">
+
+    </style>
 </resources>

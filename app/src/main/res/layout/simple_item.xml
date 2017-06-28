@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000"
-        android:textSize="22sp"
+        android:textSize="18sp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="TryKorda-1000"

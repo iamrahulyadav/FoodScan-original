@@ -166,6 +166,10 @@ public class AppActivity extends AppCompatActivity  {
                 finish();
                 break;
 
+            case R.id.action_reset_bt:
+                startActivityForResult(new Intent(AppActivity.this, DiscoverDevicesActivity.class), DiscoverDevicesActivity.PICK_DEVICE_REQUEST);
+                break;
+
             case R.id.action_privacy_policy :
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.ph-7.co.uk/privacy/"));
                 startActivity(browserIntent);

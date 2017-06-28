@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ph7.foodscan.R;
+import com.ph7.foodscan.services.FCDBService;
 import com.ph7.foodscan.services.SessionService;
 
 import org.json.JSONArray;
@@ -38,8 +40,11 @@ public class EstimationModelDetailsView extends LinearLayout {
     ImageView ivEstimationGraph;
     private TextView tvModelName;
     private final String baseUrl = "https://api.foodscan.co.uk" ;
+    private final Context context;
+
     public EstimationModelDetailsView(Context context) {
         super(context);
+        this.context = context ;
         init();
     }
 
@@ -47,11 +52,13 @@ public class EstimationModelDetailsView extends LinearLayout {
 
     public EstimationModelDetailsView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context ;
         init();
     }
 
     public EstimationModelDetailsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.context = context ;
         init();
     }
     private void init() {
@@ -92,9 +99,10 @@ public class EstimationModelDetailsView extends LinearLayout {
             }
             // setupRow(indexTableRow+1,min,max);
         }
+
     }
 
-    public void  setModelRecords(String modelRows,final String collectionId)
+    public void  setModelRecords(String modelRows,final String collectionId,final String test_id)
     {
         if(!modelRows.isEmpty())
         {
@@ -145,23 +153,31 @@ public class EstimationModelDetailsView extends LinearLayout {
                 String max = outputJObj.getString("max");
                 String value = outputJObj.getString("value");
 
-                setupRow(0,min,max,value);
-
-                JSONArray inputsJArr  =  rootJobj.getJSONArray("input");
-                for (int indexInput = 0; indexInput < inputsJArr.length(); indexInput++) {
-
-                    JSONObject inputJObj =  inputsJArr.getJSONObject(indexInput);
-                    min = inputJObj.getString("min");
-                    max =  inputJObj.getString("max");
-                    value  =  inputJObj.getString("value");
-
-                    setupRow(indexInput+1,min,max,value);
-                }
+               // setupRow(0,min,max,value);
+                setupAggregate(min,max,value);
+//                JSONArray inputsJArr  =  rootJobj.getJSONArray("input");
+//                for (int indexInput = 0; indexInput < inputsJArr.length(); indexInput++) {
+//
+//                    JSONObject inputJObj =  inputsJArr.getJSONObject(indexInput);
+//                    min = inputJObj.getString("min");
+//                    max =  inputJObj.getString("max");
+//                    value  =  inputJObj.getString("value");
+//
+//                    setupRow(indexInput+1,min,max,value);
+//                }
             } catch (JSONException e) {
+
+
+
                 e.printStackTrace();
             }
         }
+        updateViewStatus(test_id) ;
+    }
 
+    private void updateViewStatus(String test_id){
+        FCDBService fcdbService = new FCDBService(context);
+        fcdbService.updateResultStatus(test_id);
     }
 
     public byte[] readBytes(InputStream inputStream) throws IOException {
@@ -181,7 +197,7 @@ public class EstimationModelDetailsView extends LinearLayout {
         // and then we can return your byte array.
         return byteBuffer.toByteArray();
     }
-    public void setNotEstimationModelRecord(String modelRows)
+    public void setNotEstimationModelRecord(String modelRows,String test_id)
     {
         if(!modelRows.isEmpty()) {
             try {
@@ -193,9 +209,12 @@ public class EstimationModelDetailsView extends LinearLayout {
                 e.printStackTrace();
             }
             ivEstimationGraph.setVisibility(GONE);
+            modelRecords.removeAllViews();
             setupRow(-1, "", "", "Not Known");
 
         }
+
+        updateViewStatus(test_id) ;
     }
 
     private void setupRow(int i, String min , String max,String value) {
@@ -215,6 +234,7 @@ public class EstimationModelDetailsView extends LinearLayout {
         tv1.setTextSize(TEXT_SIZE);
         tv1.setTextColor(Color.BLACK);
         tv1.setLayoutParams(param);
+        tv1.setTypeface(Typeface.DEFAULT_BOLD);
         int alternate = i % 2 ;
         if(alternate == 0)
         {
@@ -223,6 +243,7 @@ public class EstimationModelDetailsView extends LinearLayout {
         TextView tv2 = new TextView(getContext());
         if(i>0) tv2.setText("");
         else tv2.setText(min);
+        tv2.setPadding(10,10,10,10);
         tv2.setTextSize(TEXT_SIZE);
         tv2.setTextColor(Color.BLACK);
         tv2.setLayoutParams(param);
@@ -233,6 +254,7 @@ public class EstimationModelDetailsView extends LinearLayout {
         }
 
         TextView tv3 = new TextView(getContext());
+        tv3.setPadding(10,10,10,10);
         tv3.setText(value);
         tv3.setTextSize(TEXT_SIZE);
         tv3.setTextColor(Color.BLACK);
@@ -245,6 +267,7 @@ public class EstimationModelDetailsView extends LinearLayout {
         TextView tv4 = new TextView(getContext());
         if(i>0) tv4.setText("");
         else tv4.setText(max);
+        tv4.setPadding(10,10,10,10);
         tv4.setTextSize(TEXT_SIZE);
         tv4.setTextColor(Color.BLACK);
         tv4.setLayoutParams(param);
@@ -258,5 +281,68 @@ public class EstimationModelDetailsView extends LinearLayout {
         modelRecords.addView(tv3);
         modelRecords.addView(tv2);
         modelRecords.addView(tv4);
+    }
+
+    private void setupAggregate(String min,String max ,String value){
+        modelRecords.removeAllViews();
+        ViewGroup.LayoutParams param = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT );
+
+
+        final float TEXT_SIZE = 18f ;
+        final int GRAVITY_VALUE = Gravity.CENTER ;
+        TextView tv1 = new TextView(getContext());
+        tv1.setText("Aggregate");
+        tv1.setPadding(10,10,10,10);
+        tv1.setTextSize(TEXT_SIZE);
+        tv1.setTextColor(Color.BLACK);
+        tv1.setLayoutParams(param);
+        tv1.setTypeface(Typeface.DEFAULT_BOLD);
+
+        TextView tv2 = new TextView(getContext());
+        tv2.setPadding(10,10,10,10);
+        tv2.setText(value);
+        tv2.setTextSize(TEXT_SIZE);
+        tv2.setTextColor(Color.BLACK);
+        tv2.setLayoutParams(param);
+
+
+        TextView tv3 = new TextView(getContext());
+        tv3.setPadding(10,10,10,10);
+        tv3.setText("Min");
+        tv3.setTextSize(TEXT_SIZE);
+        tv3.setTextColor(Color.BLACK);
+        tv3.setLayoutParams(param);
+        tv3.setTypeface(Typeface.DEFAULT_BOLD);
+
+        TextView tv4 = new TextView(getContext());
+        tv4.setPadding(10,10,10,10);
+        tv4.setText(min);
+        tv4.setTextSize(TEXT_SIZE);
+        tv4.setTextColor(Color.BLACK);
+        tv4.setLayoutParams(param);
+
+
+        TextView tv5 = new TextView(getContext());
+        tv5.setPadding(10,10,10,10);
+        tv5.setText("Max");
+        tv5.setTextSize(TEXT_SIZE);
+        tv5.setTextColor(Color.BLACK);
+        tv5.setLayoutParams(param);
+        tv5.setTypeface(Typeface.DEFAULT_BOLD);
+
+        TextView tv6 = new TextView(getContext());
+        tv6.setPadding(10,10,10,10);
+        tv6.setText(max);
+        tv6.setTextSize(TEXT_SIZE);
+        tv6.setTextColor(Color.BLACK);
+        tv6.setLayoutParams(param);
+
+        modelRecords.addView(tv1);
+        modelRecords.addView(tv2);
+        modelRecords.addView(tv3);
+        modelRecords.addView(tv4);
+        modelRecords.addView(tv5);
+        modelRecords.addView(tv6);
+
     }
 }

@@ -12,6 +12,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.ph7.foodscan.R;
+import com.ph7.foodscan.services.FCDBService;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -28,12 +29,15 @@ import java.util.Set;
  * Created by sony on 29-08-2016.
  */
 public class ClassificationModelDetailsView extends LinearLayout {
+    private final Context context;
     private TableLayout modelRecords,modelResults;
     private TextView tvModelName;
 
 
     public ClassificationModelDetailsView(Context context) {
         super(context);
+
+        this.context = context ;
         init();
     }
 
@@ -41,11 +45,13 @@ public class ClassificationModelDetailsView extends LinearLayout {
 
     public ClassificationModelDetailsView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context ;
         init();
     }
 
     public ClassificationModelDetailsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.context = context ;
         init();
     }
     private void init() {
@@ -100,7 +106,7 @@ public class ClassificationModelDetailsView extends LinearLayout {
         }
     }
 
-    public void setModelRecords(String modelRows,String collectionId)
+    public void setModelRecords(String modelRows,String collectionId,String test_id)
     {
 
          int scans  = 0 ;//modelRows.size();
@@ -142,8 +148,13 @@ public class ClassificationModelDetailsView extends LinearLayout {
         }
 
         totalConfidence =  100.0f * scans ;
-    }
 
+        updateViewStatus(test_id);
+    }
+    private void updateViewStatus(String test_id){
+        FCDBService fcdbService = new FCDBService(context);
+        fcdbService.updateResultStatus(test_id);
+    }
 
     private void setupTableRow(int i, String brandName, String confidence) {
         TableRow tr = new TableRow(getContext());

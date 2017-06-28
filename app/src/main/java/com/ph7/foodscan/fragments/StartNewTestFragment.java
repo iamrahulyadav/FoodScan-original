@@ -483,7 +483,7 @@ public class StartNewTestFragment extends Fragment {
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                WifiManager wifiManager = (WifiManager)getActivity().getSystemService(Context.WIFI_SERVICE);
+                WifiManager wifiManager = (WifiManager)getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                 wifiManager.setWifiEnabled(true);
             }
         });

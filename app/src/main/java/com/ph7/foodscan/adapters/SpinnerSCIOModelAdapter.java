@@ -2,9 +2,12 @@ package com.ph7.foodscan.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -79,6 +82,13 @@ public class SpinnerSCIOModelAdapter extends ArrayAdapter<ScioCollectionModel> {
             label.setTextColor(Color.BLACK);
         }else label.setTextColor(Color.parseColor("#ffa0a09e"));
 
+//        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//        Display display = wm.getDefaultDisplay();
+//        Point size = new Point();
+//        display.getSize(size);
+//        int _width = size.x;
+
+        label.setWidth(parent.getWidth());
         return label;
     }
 }

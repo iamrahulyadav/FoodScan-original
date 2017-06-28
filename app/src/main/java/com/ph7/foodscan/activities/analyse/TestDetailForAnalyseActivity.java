@@ -106,11 +106,12 @@ public class TestDetailForAnalyseActivity extends AppActivity {
         for (ScioReadingWrapper scioReading: this.scioReadingWrappers) {
             Scan scan = new Scan(scioReading);
 
+
             // [04-03-2017]
-            String deviceName = FoodScanApplication.getDeviceHandler().getDeviceName() ;
+          /*  String deviceName = FoodScanApplication.getDeviceHandler().getDeviceName() ;
             String deviceAddress = FoodScanApplication.getDeviceHandler().getDeviceAddress() ;
             Device device = new Device(deviceName,deviceAddress);
-            scan.addDevice(device);
+            scan.addDevice(device);*/
 
             this.scanBundle.addScan(scan);
         }

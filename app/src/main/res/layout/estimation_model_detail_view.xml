@@ -39,11 +39,13 @@
 
 
     <HorizontalScrollView
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <GridLayout
+            android:background="#FFF9F9F9"
             android:id="@+id/modelRecords"
-            android:columnCount="4"
+            android:columnCount="2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView

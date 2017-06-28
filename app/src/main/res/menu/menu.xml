@@ -18,6 +18,10 @@
         android:title="@string/help">
     </item>
     <item
+        android:id="@+id/action_reset_bt"
+        android:title="@string/reset_bt">
+    </item>
+    <item
         android:id="@+id/action_logout"
         android:title="@string/logout">
     </item>

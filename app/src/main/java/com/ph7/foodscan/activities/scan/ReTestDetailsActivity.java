@@ -668,56 +668,6 @@ public class ReTestDetailsActivity extends AppActivity  implements GoogleApiClie
         });
     }
     String test_id ;
-    private void saveAnalyseData(String analysedData) {
-        final EditText etTestName =  (EditText) findViewById(R.id.etTestName) ;
-        final EditText etTestNote =  (EditText) findViewById(R.id.etTestNote) ;
-        test_id =  Validation.generateRandomString(15);
-        String test_name = etTestName.getText().toString().trim();
-        String test_note = etTestNote.getText().toString().trim() ;
-        // business Location json
-        String test_location = "";
-        try {
-            test_location = createBusinessJSON();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("FoodScan","Test Location : "+test_location);
-
-        String create_datetime = dateFormat.format(Calendar.getInstance().getTime());
-        //create_datetime = create_datetime.replace(" "," at ");
-        String expire= "" ;
-        String imgs_path = "" ;
-
-        for (String imagePath:listImages) {
-            imgs_path = imgs_path+","+imagePath;
-        }
-        if(!imgs_path.isEmpty())
-        {
-            imgs_path = imgs_path.substring(1);
-        }
-
-        FCDBService fcdbService = new FCDBService(getApplicationContext());
-        try {
-
-            String timeStamp  = String.valueOf(Calendar.getInstance().getTime().getTime());
-            if (fcdbService.saveTestAnalyse(test_id, test_name, test_note, test_location,this.analysedData.model_ids,
-                    this.analysedData.collection_id,analysedData, this.scans,create_datetime, expire, imgs_path,timeStamp)) {
-
-                Log.d("Success","Saved analysed data");
-            } else {
-                Log.d("Failed","Error in saving analysed data");
-            }
-
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        finally {
-            fcdbService.close();
-        }
-
-    }
     //New
     private void updateScan(Map<ScioReading, HashSet<Model>> models) {
         for (Map.Entry<ScioReading,HashSet<Model>> entry : models.entrySet()) {
