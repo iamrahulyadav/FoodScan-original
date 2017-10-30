@@ -16,6 +16,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.ph7.foodscan.R;
+import com.ph7.foodscan.services.SessionService;
 
 import java.net.URI;
 import java.util.UUID;
@@ -26,13 +27,14 @@ import java.util.regex.Pattern;
 public class AuthDialog extends AppCompatActivity {
 
     private static String TAG = "AuthDialog";
-
-    private static String OAUTH_AUTH_URL = "https://auth.foodscan.co.uk/oauth/v2/auth";
+    private static String OAUTH_AUTH_URL;
+   // private static String OAUTH_AUTH_URL = "https://auth.foodscan.co.uk/oauth/v2/auth";
+  //  private static String OAUTH_AUTH_URL = "https://authtest.foodscan.co.uk/oauth/v2/auth";/*For Testing Environment*/
     private static String OAUTH_CLIENT_ID = "5536626e-476d-4115-9054-6624edafd3ad";
     private static String OAUTH_REDIRECT_URI="http://localhost";
     private static String OAUTH_RESPONSE_TYPE="token";
     private static String OAUTH_SCOPES="basic";
-
+    private SessionService sessionService = new SessionService();
     public static String ERROR_DESCRIPTION =  "errorDescription" ;
     public static String ERROR_CODE =  "errorCode" ;
     private String state;
@@ -43,9 +45,27 @@ public class AuthDialog extends AppCompatActivity {
         setContentView(R.layout.activity_auth_dialog);
         getSupportActionBar().hide();
         state = UUID.randomUUID().toString();
-
+        if(sessionService.getuserpref()!=null)
+        {
+            String pref=sessionService.getuserpref();
+            if(pref.equalsIgnoreCase("Live"))
+            {
+                OAUTH_AUTH_URL = "https://auth.foodscan.co.uk/oauth/v2/auth";
+            }
+            else if(pref.equalsIgnoreCase("Test"))
+            {
+                OAUTH_AUTH_URL = "https://authtest.foodscan.co.uk/oauth/v2/auth";
+            }
+        }
         WebView web = (WebView) findViewById(R.id.web_view);
         web.getSettings().setJavaScriptEnabled(true);
+        String abc=OAUTH_AUTH_URL
+                +"?redirect_uri="+OAUTH_REDIRECT_URI
+                +"&response_type="+OAUTH_RESPONSE_TYPE
+                +"&client_id="+OAUTH_CLIENT_ID
+                +"&scope="+OAUTH_SCOPES
+                +"&state="+state;
+        Log.d("Url",abc);
         web.loadUrl(
                 OAUTH_AUTH_URL
                         +"?redirect_uri="+OAUTH_REDIRECT_URI

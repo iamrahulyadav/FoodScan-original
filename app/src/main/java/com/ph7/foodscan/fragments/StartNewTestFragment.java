@@ -98,7 +98,7 @@ public class StartNewTestFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                FoodScanApplication.getDeviceHandler().setDevice(false ,new com.ph7.foodscan.device.BluetoothDevice(device.getAddress(),deviceName), new DeviceConnectHandler() {
+                                FoodScanApplication.getDeviceHandler().setDevice(new com.ph7.foodscan.device.BluetoothDevice(device.getAddress(),deviceName), new DeviceConnectHandler() {
                                     @Override
                                     public void onConnect() {
                                         Log.d("FoodScan_Bluetooth","Connected...");
@@ -136,18 +136,6 @@ public class StartNewTestFragment extends Fragment {
                                                     newTestHandler.onNeedsDevice();
                                                 }
                                             }).show();
-//                                    AlertDialog.Builder builder =  new AlertDialog.Builder(getActivity());
-//                                    builder.setMessage(sessionService.getScioDeviceName()+" is not found yet.\nPress Ok ,for searching another device.");
-//                                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//                                            newTestHandler.onNeedsDevice();
-//                                            dialog.dismiss();
-//                                        }
-//                                    });
-//
-//                                    builder.create() ;
-//                                    builder.show() ;
                                 }
                                 else{
                                     isConnecting = false ;
@@ -162,6 +150,8 @@ public class StartNewTestFragment extends Fragment {
                 else {
                     Log.d("MyTag", "device.getName() is null");
                 }
+            }else if(ConnectivityManager.CONNECTIVITY_ACTION.equals(actionName)) {
+                refresh();
             }
             else{
                 Log.d("FoodScan_Bluetooth","Action : "+actionName);
@@ -317,7 +307,6 @@ public class StartNewTestFragment extends Fragment {
                             showBatteryStatus(batteryPercent);
                         }});
                 }
-
                 @Override
                 public void onError() {}
 
@@ -385,7 +374,7 @@ public class StartNewTestFragment extends Fragment {
         * *****************************************************************
         * ***/
 
-        if(!sessionService.isExpireAccessToken())
+        if(!sessionService.isExpireAccessToken() && Validation.isOnline(getActivity()))
         {
             networkConnectCont.setVisibility(View.VISIBLE);
             tvNWConnectivityStatus.setText("Connected");
@@ -476,26 +465,28 @@ public class StartNewTestFragment extends Fragment {
             }
         });
     }
+    AlertDialog alertDialog;
     private void showSettingsPopup() {
-        AlertDialog dialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("No Internet connection.");
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                WifiManager wifiManager = (WifiManager)getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                wifiManager.setWifiEnabled(true);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.setCancelable(false);
-        dialog = builder.create();
-        dialog.show();
+        if(alertDialog==null || !alertDialog.isShowing()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("No Internet connection.");
+            builder.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                    wifiManager.setWifiEnabled(true);
+                }
+            });
+            builder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.setCancelable(false);
+            alertDialog = builder.create();
+            alertDialog.show();
+        }
     }
 
     // Calibrate Functioning
@@ -575,6 +566,7 @@ public class StartNewTestFragment extends Fragment {
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         getActivity().registerReceiver(networkReceiver, filter);
+
     }
 
 

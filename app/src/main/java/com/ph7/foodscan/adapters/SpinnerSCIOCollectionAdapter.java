@@ -10,7 +10,10 @@ import android.widget.TextView;
 
 import com.ph7.foodscan.R;
 import com.ph7.foodscan.models.ph7.ScioCollection;
+import com.ph7.foodscan.models.ph7.ScioCollectionModel;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -32,6 +35,12 @@ public class SpinnerSCIOCollectionAdapter extends ArrayAdapter<ScioCollection> {
         if(getCount()<=0)
         {
             ScioCollection scioCollection = new ScioCollection("Choose a collection");
+            Collections.sort(objects, new Comparator<ScioCollection>() {
+                @Override
+                public int compare(ScioCollection o1, ScioCollection o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
             this.add(scioCollection);
         }
 

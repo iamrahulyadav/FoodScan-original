@@ -147,7 +147,7 @@ public class DiscoverDevicesActivity extends AppActivity {
 //        runOnUiThread(new Runnable() {
 //            @Override
 //            public void run() {
-                FoodScanApplication.getDeviceHandler().setDevice(false ,dev, new DeviceConnectHandler() {
+                FoodScanApplication.getDeviceHandler().setDevice(dev, new DeviceConnectHandler() {
                     @Override
                     public void onConnect() {
                         Log.d("BluetoothResponse",dev.getName()+" :=>  "+dev.getAddress() +" Connected") ;

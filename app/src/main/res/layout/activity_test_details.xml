@@ -7,9 +7,16 @@
         android:id="@+id/button"
         layout="@layout/device_status_bar"/>
 
-    <ScrollView
-        android:layout_above="@+id/actionContainer"
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:layout_below="@+id/button"
+        android:id="@+id/buttonNetworkConnect"
+        layout="@layout/backend_status_bar"/>
+
+    <ScrollView
+        android:layout_above="@+id/bottomBar"
+        android:layout_below="@+id/buttonNetworkConnect"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -32,7 +39,7 @@
                 android:backgroundTint="#dadada"
                 android:hint="Test name"
                 android:layout_width="match_parent"
-                android:layout_height="40dp" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:paddingLeft="5dp"
@@ -159,83 +166,111 @@
     </ScrollView>
 
     <View
-        android:layout_above="@+id/actionContainer"
+        android:layout_above="@+id/bottomBar"
         android:id="@+id/actionSeparator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#dadada"/>
-
     <LinearLayout
-        android:id="@+id/actionContainer"
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="3"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
 
         <LinearLayout
-            android:clickable="true"
-            android:id="@+id/saveForLater"
-            android:layout_width="0dp"
-            android:layout_weight="1"
             android:gravity="center"
+            android:id="@+id/scanContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:src="@drawable/done"/>
+            android:weightSum="3"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            >
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Done"
-                android:textColor="#000"
-                android:textSize="20sp"
+                android:gravity="center"
+
+                android:layout_margin="5dp"
+                android:id="@+id/startTest"
+                android:layout_width="150dp"
+                android:text="Start Test"
+                style="@style/FCShadowButtonStyle"
                 />
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/rescanButton"
-            android:clickable="true"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:visibility="gone"
+            android:id="@+id/actionContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:src="@drawable/repeat"/>
-            <TextView
-                android:text="Repeat"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textColor="#000"
-                android:textSize="20sp" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/analyseNow"
-            android:clickable="true"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:src="@drawable/analyse"/>
-            <TextView
+            android:weightSum="3"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
 
-                android:text="Analyse"
+            <LinearLayout
+                android:clickable="true"
+                android:id="@+id/saveForLater"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textColor="#000"
-                android:textSize="20sp" />
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_margin="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:src="@drawable/done"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Done"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/rescanButton"
+                android:clickable="true"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_margin="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:src="@drawable/repeat"/>
+                <TextView
+                    android:text="Repeat"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/analyseNow"
+                android:clickable="true"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_margin="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:src="@drawable/analyse"/>
+                <TextView
+
+                    android:text="Analyse"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

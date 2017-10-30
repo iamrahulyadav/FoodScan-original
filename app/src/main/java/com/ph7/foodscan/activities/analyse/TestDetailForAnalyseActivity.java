@@ -57,7 +57,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.internal.Util;
+
 
 public class TestDetailForAnalyseActivity extends AppActivity {
 
@@ -221,17 +221,30 @@ public class TestDetailForAnalyseActivity extends AppActivity {
                         @Override
                         public void onError(int code, String msg) {
                             Log.d("Analyse Result", msg);
+                            String errorMsg  = "Analyse failed";
+                            try {
+                                JSONObject jsonObject = new JSONObject(msg);
+                                if(jsonObject.getString("error_type").toLowerCase().equals("objectnotfound")
+                                        && jsonObject.getString("object_type").toLowerCase().equals("model") ){
+                                    errorMsg = "The requested model no longer exists";
+                                }else {
+                                    errorMsg = jsonObject.getString("message");
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             statusView.setStatusCode(0);
                             statusView.setBGColor();
-                            statusView.setStatusMessage("Analyse failed");
+                            statusView.setStatusMessage(errorMsg);
                             statusView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     statusView.hide();
                                 }
                             });
-                            Toast.makeText(_this, "Analyse failed", Toast.LENGTH_SHORT).show();
-                            // showError(code, msg);
+
+
                         }
                     });
                 }

@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.ph7.foodscan.R;
 import com.ph7.foodscan.models.ph7.ScioCollectionModel;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -64,7 +66,10 @@ public class SpinnerSCIOModelAdapter extends ArrayAdapter<ScioCollectionModel> {
         // Change By atul
         if(position>0) {
             label.setTextColor(Color.BLACK);
-        }else label.setTextColor(Color.parseColor("#ffa0a09e"));
+        }else {
+
+            label.setTextColor(Color.parseColor("#ffa0a09e"));
+        }
         //
         return label;
     }
@@ -74,13 +79,24 @@ public class SpinnerSCIOModelAdapter extends ArrayAdapter<ScioCollectionModel> {
     @Override
     public View getDropDownView(int position, View convertView,
                                 ViewGroup parent) {
+
         convertView = layoutInflator.inflate(this.layout, null);
         TextView label = (TextView)convertView.findViewById(R.id.tvName);
 
         label.setText(this.models.get(position).getName());
+
         if(position>0) {
             label.setTextColor(Color.BLACK);
-        }else label.setTextColor(Color.parseColor("#ffa0a09e"));
+       /*     Changed by Muhib on 26/10/2017*/
+            Collections.sort(models.subList(1,models.size()), new Comparator<ScioCollectionModel>() {
+                @Override
+                public int compare(ScioCollectionModel o1, ScioCollectionModel o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
+/*sorting*/
+        }
+        else label.setTextColor(Color.parseColor("#ffa0a09e"));
 
 //        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 //        Display display = wm.getDefaultDisplay();

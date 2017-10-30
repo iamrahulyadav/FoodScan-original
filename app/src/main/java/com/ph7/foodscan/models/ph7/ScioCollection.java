@@ -15,6 +15,8 @@ import com.ph7.foodscan.utils.serializing.AnnotationExclusionStrategy;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +54,7 @@ public class ScioCollection implements Parcelable {
     public void addModel(ScioCollectionModel model) {
         if (!this.models.contains(model)) {
             this.models.add(model);
+
         }
     }
 
@@ -60,6 +63,7 @@ public class ScioCollection implements Parcelable {
     }
 
     public List<ScioCollectionModel> getModels() {
+
         return this.models;
     }
 

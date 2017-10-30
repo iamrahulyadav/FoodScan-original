@@ -7,8 +7,15 @@
         android:id="@+id/button"
         layout="@layout/device_status_bar"/>
 
-    <TextView
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/button"
+        android:id="@+id/buttonNetworkConnect"
+        layout="@layout/backend_status_bar"/>
 
+
+   <TextView
         android:visibility="gone"
         android:id="@+id/scanAmount"
         android:layout_width="match_parent"
@@ -16,7 +23,7 @@
 
     <ScrollView
         android:layout_above="@+id/actionContainer"
-        android:layout_below="@+id/button"
+        android:layout_below="@+id/buttonNetworkConnect"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -41,7 +48,7 @@
                     android:backgroundTint="#dadada"
                     android:hint="Test name"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp" />
+                    android:layout_height="wrap_content" />
                 <ImageView
                     android:id="@+id/ivClearTestName"
                     android:layout_gravity="right|center_vertical"
@@ -196,45 +203,7 @@
                 </RelativeLayout>
 
             </GridLayout>
-
-            <!--<LinearLayout-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:weightSum="2">-->
-
-
-                <!--<com.ph7.analyserforscio.views.ShadowedButton-->
-                    <!--android:id="@+id/saveForLater"-->
-                    <!--android:text="Save for later"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:layout_margin="2dp"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--style="@style/RedButtonStyle"/>-->
-
-                <!--<ImageView-->
-                    <!--android:visibility="gone"-->
-                    <!--android:id="@+id/rescanButton"-->
-                    <!--android:text="Rescan"-->
-                    <!--android:gravity="center"-->
-                    <!--android:layout_margin="2dp"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:src="@drawable/rescan"-->
-                    <!--style="@style/FCShadowButtonStyle" />-->
-
-                <!--<com.ph7.analyserforscio.views.ShadowedButton-->
-                    <!--android:id="@+id/analyseNow"-->
-                    <!--android:text="Analyse Now"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:layout_margin="2dp"-->
-                    <!--style="@style/GreenButtonStyle"/>-->
-
-            <!--</LinearLayout>-->
-
-
-
-        </LinearLayout>
+       </LinearLayout>
 
     </ScrollView>
     <View

@@ -8,8 +8,8 @@ android {
         applicationId "com.ph7.foodscan"
         minSdkVersion 18
         targetSdkVersion 24
-        versionCode 36
-        versionName "1.36"
+        versionCode 47
+        versionName "1.47"
         multiDexEnabled = true
     }
     buildTypes {
@@ -43,8 +43,9 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:9.2.1'
     compile 'com.google.android.gms:play-services-auth:9.2.1'
     compile 'com.google.android.gms:play-services-gcm:9.2.1'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile project(':library')
     compile project(':licensing')
-    compile project(':SCiOSDK_Android-v1.0.2.72-20161030')
+    compile project(':SCiOSDK_Android-v1.0.3.1-20170710')
 }

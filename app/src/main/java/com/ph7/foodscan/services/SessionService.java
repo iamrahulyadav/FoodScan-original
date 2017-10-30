@@ -76,7 +76,14 @@ public class SessionService {
     {
         return this.preferences.getString("device_name", null);
     }
-
+    public  void  setuserpref(String usertype)
+    {
+    this.preferences.edit().putString("userspref",usertype).apply();
+    }
+    public  String  getuserpref()
+    {
+        return this.preferences.getString("userspref", null);
+    }
 
     public void logout() {
         SharedPreferences.Editor editor =  this.preferences.edit() ;
@@ -84,6 +91,7 @@ public class SessionService {
         editor.remove("username").apply();
         editor.remove("password").apply();
         editor.remove("expire").apply();
+        editor.remove("userspref").apply();
     }
 
     public Boolean isSoundTurnedOn() {

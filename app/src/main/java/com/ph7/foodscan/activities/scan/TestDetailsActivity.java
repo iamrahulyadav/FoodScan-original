@@ -118,6 +118,8 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
 
     private GridLayout addedPhotosContainer ;
     EditText etBusinessLocation;
+    private LinearLayout scanContainer;
+    private LinearLayout actionContainer;
 
 
     @Override
@@ -162,10 +164,10 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
             }
         });
 
-        this.readings = (List<ScioReadingWrapper>) getIntent().getExtras().get("readings");
+        //this.readings = (List<ScioReadingWrapper>) getIntent().getExtras().get("readings");
         //this.model = (ScioCollectionModel) getIntent().getExtras().get("model");
         this.models = (ArrayList<ScioCollectionModel>) getIntent().getExtras().get("models");
-     //   this.collection = (ScioCollection) getIntent().getExtras().get("collection"); // [Latest]
+        //   this.collection = (ScioCollection) getIntent().getExtras().get("collection"); // [Latest]
         scans = (int)getIntent().getExtras().get("scans");
         String collectionName = "";
         // [Latest]
@@ -185,6 +187,23 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
         this.setupAddPhotoView();
         setActionBarOverlayZero();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        scanContainer = (LinearLayout)findViewById(R.id.scanContainer);
+        actionContainer = (LinearLayout)findViewById(R.id.actionContainer);
+
+        final TextView startTest = (TextView)scanContainer.findViewById(R.id.startTest);
+        startTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firstScan();
+            }
+        });
+        switchContainer(true);
+    }
+
+    private void switchContainer(boolean b) {
+        scanContainer.setVisibility(b?View.VISIBLE:View.GONE);
+        actionContainer.setVisibility(b?View.GONE:View.VISIBLE);
     }
 
     private void setupRescan() {
@@ -374,6 +393,74 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
         }
     }
 
+
+    private void firstScan() {
+        this.setupSoundPool();
+        final TestDetailsActivity _this = this;
+        final int _soundId =  this.soundId ;
+        final TextView button = (TextView) findViewById(R.id.startTest);
+        final  StatusView statusView = new StatusView(TestDetailsActivity.this);
+        statusView.setStatusCode(2);
+        statusView.setStatusMessage("Scanning in progress...");
+        statusView.show();
+
+        final int streamId =  (new SessionService().isSoundTurnedOn()) ?soundPool.play(_soundId,1.0f,1.0f,1,-1,1):0;
+
+        new ScanningService().execute(new ScanHandler() {
+            @Override
+            public void onComplete(final List<ScioReadingWrapper> scioReadings) {
+                if(new SessionService().isSoundTurnedOn())
+                    soundPool.stop(streamId);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        statusView.setStatusCode(1);
+                        statusView.setBGColor();
+                        statusView.setStatusMessage("Test complete");
+                        statusView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                statusView.hide();
+                                _this.readings = scioReadings ;
+                                _this.setupBundle();
+                                switchContainer(false);
+                            }
+                        });
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailed(final Error exception) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(new SessionService().isSoundTurnedOn())
+                            soundPool.stop(streamId);
+                        button.setText("Start Test");
+                        Log.d("Reading", exception.getLocalizedMessage());
+                        if (exception instanceof ScanningService.DeviceNeedsCalibrationError) {
+                            statusView.hide();
+                            Toast.makeText(_this, "SCiO needs calibration", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        },this.scans, new ScanUpdateHandler() {
+            @Override
+            public void updateScanCount(final int scanCount) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        statusView.setStatusMessage("Scan "+scanCount+" in progress...");
+                    }
+                });
+
+            }
+        });
+    }
+
     private String createBusinessJSON() throws JSONException {
         JSONObject businessJOBj = new JSONObject();
         String test_location= etBusinessLocation.getText().toString().trim() ;
@@ -431,7 +518,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
     private void setupBundle() {
         this.scanBundle = new ScanBundle();
         this.scanBundle.sample = new Sample();
-       // if(this.collection!=null)  this.scanBundle.setCollectionUuid(this.collection.getUuid()); // [Latest]
+        // if(this.collection!=null)  this.scanBundle.setCollectionUuid(this.collection.getUuid()); // [Latest]
         this.scanBundle.sample.setBusiness(this.selectedBusiness);
         for (ScioReadingWrapper scioReading: this.readings) {
             Scan scan = new Scan(scioReading);
@@ -523,9 +610,22 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
             @Override
             public void onError(int code, String msg) {
                 Log.d("Analyse Result", msg);
+                String errorMsg  = "Analyse failed";
+                try {
+                    JSONObject jsonObject = new JSONObject(msg);
+                    if(jsonObject.getString("error_type").toLowerCase().equals("objectnotfound")
+                            && jsonObject.getString("object_type").toLowerCase().equals("model") ){
+                        errorMsg = "The requested model no longer exists";
+                    }else {
+                        errorMsg = jsonObject.getString("message");
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 statusView.setStatusCode(0);
                 statusView.setBGColor();
-                statusView.setStatusMessage("Analyse failed");
+                statusView.setStatusMessage(errorMsg);
                 statusView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -542,7 +642,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
         for (Map.Entry<ScioReading,HashSet<Model>> entry : models.entrySet()) {
             HashSet<Model> modelsList = entry.getValue();
             for (Model model :modelsList) {
-              //  model.setCollectionName(this.collection.getName()); // [Latest]
+                //  model.setCollectionName(this.collection.getName()); // [Latest]
                 this.scanBundle.updateScan(entry.getKey(), model);
             }
 
@@ -784,7 +884,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
             case REQUEST_COLLECTION_MODEL :
                 if(data!=null) {
                     this.models = data.getParcelableArrayListExtra("models");
-                  //  this.collection = data.getParcelableExtra("collection"); // [Latest]
+                    //  this.collection = data.getParcelableExtra("collection"); // [Latest]
                     this.scanBundle.setCollectionUuid("");//this.collection.getUuid()); // [Latest]
                 }
                 break ;
@@ -901,7 +1001,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
 
     private void addImageToGUI(Bitmap bitmap, final String filePath) {
 
-       LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
         final View upload_image_view = inflater.inflate(R.layout.upload_image_view,null) ;
         ImageView uploadImage  = (ImageView) upload_image_view.findViewById(R.id.uploadedImage) ;
 //        final FrameLayout fl  = new FrameLayout(getApplicationContext());
@@ -915,7 +1015,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
         uploadImage.setContentDescription(filePath);
 //        imageView.setLayoutParams(layoutParams);
 //        fl.addView(imageView);
-       // ImageView closeImage  = new ImageView(getApplicationContext());
+        // ImageView closeImage  = new ImageView(getApplicationContext());
         ImageView closeImage  = (ImageView) upload_image_view.findViewById(R.id.closeImage) ;
         //closeImage.setImageResource(R.drawable.button_remove_photo);
         closeImage.setOnClickListener(new View.OnClickListener() {
@@ -926,10 +1026,10 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
                 --addImagesLimit;
             }
         });
-       // fl.addView(closeImage);
-       // FrameLayout.LayoutParams layoutParams1 = (FrameLayout.LayoutParams)closeImage.getLayoutParams() ;
-      //  layoutParams1.gravity = Gravity.RIGHT|Gravity.TOP |Gravity.END ;
-       // closeImage.setLayoutParams(layoutParams1);
+        // fl.addView(closeImage);
+        // FrameLayout.LayoutParams layoutParams1 = (FrameLayout.LayoutParams)closeImage.getLayoutParams() ;
+        //  layoutParams1.gravity = Gravity.RIGHT|Gravity.TOP |Gravity.END ;
+        // closeImage.setLayoutParams(layoutParams1);
         addedPhotosContainer.addView(upload_image_view,0);
         listImages.add(filePath);
         ++addImagesLimit;
@@ -1029,6 +1129,7 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
                         statusView.setStatusCode(1);
                         statusView.setBGColor();
                         statusView.setStatusMessage("Test complete");
+
                         statusView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

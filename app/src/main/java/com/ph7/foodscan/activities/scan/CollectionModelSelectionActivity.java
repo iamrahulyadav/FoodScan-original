@@ -25,6 +25,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -65,7 +67,7 @@ public class CollectionModelSelectionActivity extends AppActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 modelAdapter.clear();
-                ScioCollectionModel scioCollectionModel = new ScioCollectionModel("Choose a model");
+                ScioCollectionModel scioCollectionModel = new ScioCollectionModel(" a model");
                 modelAdapter.add(scioCollectionModel);
                 selectedModelsContainer.removeAllViews();
                 multipleModels.clear();
@@ -160,6 +162,12 @@ public class CollectionModelSelectionActivity extends AppActivity {
                         modelAdapter.add(scioModel);
                         models.add(scioModel);
                     }
+                    Collections.sort(models, new Comparator<ScioCollectionModel>() {
+                        @Override
+                        public int compare(ScioCollectionModel o1, ScioCollectionModel o2) {
+                            return o1.getName().compareTo(o2.getName());
+                        }
+                    });
                 } catch (JSONException e) {
                     models = new ArrayList<>();
                 }

@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonSyntaxException;
@@ -44,7 +45,20 @@ public class FoodScanService implements FoodScanServiceInterface {
 
     public FoodScanService() {
         try {
-            this.serverURL = new URL("https://api.foodscan.co.uk");
+            if(sessionService.getuserpref()!=null)
+            {
+                String pref=sessionService.getuserpref();
+                if(pref.equalsIgnoreCase("Live"))
+                {
+                    this.serverURL = new URL("https://api.foodscan.co.uk");
+                }
+                else if(pref.equalsIgnoreCase("Test"))
+                {
+                    this.serverURL = new URL("https://apitest.foodscan.co.uk");
+                }
+            }
+         //   this.serverURL = new URL("https://api.foodscan.co.uk");
+          //  this.serverURL = new URL("https://apitest.foodscan.co.uk");/*For Testing Environment*/
         } catch (MalformedURLException e) {
 
         }
@@ -97,7 +111,7 @@ public class FoodScanService implements FoodScanServiceInterface {
     public void logError(JSONObject jsonObject, FoodScanHandler handler) {
         String url = "http://webdevelopmentreviews.net/global/Webservice/track";
         JsonRequest request = this.jsonRequest(Request.Method.POST, url, jsonObject, handler);
-       // request.setUsesAuthentication(this.sessionService.getUserToken());
+        // request.setUsesAuthentication(this.sessionService.getUserToken());
         this.queue.add(request);
     }
 

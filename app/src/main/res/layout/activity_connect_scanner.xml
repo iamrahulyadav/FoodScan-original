@@ -4,7 +4,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -35,6 +37,7 @@
             />
 
         <LinearLayout
+            android:id="@+id/ll"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/connectScanner"
             android:layout_width="wrap_content"
@@ -50,23 +53,56 @@
 
         </LinearLayout>
 
-
+<RadioGroup
+android:layout_centerHorizontal="true"
+    android:id="@+id/rg_user"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="50dp"
+    android:padding="10dp"
+    android:layout_below="@+id/ll"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <RadioButton
+        android:padding="10dp"
+        android:button="@null"
+        android:checked="false"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Live"
+        android:textSize="16sp"
+        android:drawablePadding="9dp"
+        android:drawableLeft="@drawable/radioselector"
+        android:drawableStart="@drawable/radioselector"
+        android:textStyle="bold"/>
+    <RadioButton
+        android:padding="10dp"
+        android:button="@null"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Test"
+        android:drawablePadding="9dp"
+        android:drawableLeft="@drawable/radioselector"
+        android:drawableStart="@drawable/radioselector"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+</RadioGroup>
 
 
         <com.ph7.foodscan.views.ShadowedButton
             android:id="@+id/skipAndLogIn"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:text="Skip and log in"
+            android:text="Continue"
             style="@style/GreenButtonStyle"
             android:onClick="onSkipClicked"
             />
 
     </RelativeLayout>
 
-
+</ScrollView>
 </LinearLayout>

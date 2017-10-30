@@ -48,6 +48,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -109,6 +111,7 @@ public class NewTestActivity extends AppActivity {
                 multipleModels.clear();
                 if(i>0) {
                     checkBlankFieldValidation();
+
                     modelAdapter.addAll(collections.get(i-1).getModels());
                     modelAdapter.notifyDataSetChanged();
                     collection = collections.get(i-1);
@@ -173,7 +176,8 @@ public class NewTestActivity extends AppActivity {
         // get Collection From Food Scan Server
         this.foodScanService.getModels(new FoodScanHandler() {
             @Override
-            public void onSuccess(JSONObject object) {
+            public void onSuccess(JSONObject object)
+            {
                 progressBarCollection.setVisibility(View.GONE);
                 modelAdapter.clear();
                 ScioCollectionModel scioCollectionModel = new ScioCollectionModel("Choose a model");
@@ -186,14 +190,20 @@ public class NewTestActivity extends AppActivity {
                     JSONArray modelsJsonArr  = object.getJSONArray("models");
                     for (int indexModelJsonObj = 0; indexModelJsonObj < modelsJsonArr.length(); indexModelJsonObj++) {
                         JSONObject modelJsonObj  =  modelsJsonArr.getJSONObject(indexModelJsonObj) ;
+
                         String uuid = modelJsonObj.getString("uuid");
                         String name  = modelJsonObj.getString("name");
                         String src = modelJsonObj.getString("source");
                         String type  =  modelJsonObj.getString("type");
+
                         ScioCollectionModel scioModel = new ScioCollectionModel(name,uuid,type,src);
+
                         modelAdapter.add(scioModel);
                         models.add(scioModel);
+                     //  modelAdapter.notifyDataSetChanged();
+
                     }
+
                 } catch (JSONException e) {
                     models = new ArrayList<>();
                 }
@@ -206,7 +216,9 @@ public class NewTestActivity extends AppActivity {
                 progressBarCollection.setVisibility(View.GONE);
                 getModels();
             }
+
         });
+
     }
 
     private void addAnotherModelCollection() {
@@ -216,6 +228,8 @@ public class NewTestActivity extends AppActivity {
         spinner.setBackground( modelList.getBackground());
         spinner.setPopupBackgroundDrawable(modelList.getPopupBackground());
         ArrayList<ScioCollectionModel> modelsColl  = new ArrayList<>();
+
+
         SpinnerSCIOModelAdapter adapter = new SpinnerSCIOModelAdapter(this.getApplicationContext(), R.layout.simple_item, modelsColl);
         spinner.setAdapter(adapter);
         adapter.clear();
@@ -300,7 +314,7 @@ public class NewTestActivity extends AppActivity {
         TextView startTestButton = (TextView) findViewById(R.id.startTest);
         ShadowedButton calibrateButton = (ShadowedButton) findViewById(R.id.calibrate);
 
-        startTestButton.setText("Start Test");
+        startTestButton.setText("Next");
         calibrateButton.setText("Calibrate");
         checkBluetoothPermissions();
         IntentFilter filter = new IntentFilter();
@@ -315,6 +329,7 @@ public class NewTestActivity extends AppActivity {
 
     private void setupScanButton() {
         final TextView button = (TextView) findViewById(R.id.startTest);
+        button.setText("Next") ; // [03-07-2017]
         final NewTestActivity _this = this;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -330,7 +345,7 @@ public class NewTestActivity extends AppActivity {
 
                 getSelectedModels();
 
-                _this.scan();
+                _this.nextScreen(); // [03-07-2017]
             }
         });
     }
@@ -377,7 +392,6 @@ public class NewTestActivity extends AppActivity {
                     }
                 });
             }
-
             @Override
             public void onError() {
                 runOnUiThread(new Runnable() {
@@ -387,7 +401,6 @@ public class NewTestActivity extends AppActivity {
                     }
                 });
             }
-
             @Override
             public void onTimeout() {
                 runOnUiThread(new Runnable() {
@@ -398,6 +411,15 @@ public class NewTestActivity extends AppActivity {
                 });
             }
         });
+    }
+    private void nextScreen(){
+        final NewTestActivity _this = this;
+        Intent intent = new Intent(_this, TestDetailsActivity.class);
+        intent.putExtra("model", model);
+        intent.putParcelableArrayListExtra("models", multipleModels);
+        //intent.putExtra("collection", collection);  // [Latest]
+        intent.putExtra("scans", scansCount);
+        startActivity(intent);
     }
 
     private void scan() {

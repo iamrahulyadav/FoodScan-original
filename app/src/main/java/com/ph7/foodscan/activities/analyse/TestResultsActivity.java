@@ -324,7 +324,6 @@ public class TestResultsActivity extends AppActivity {
 
         // Get Scan Data and Open Re Analyze activity
         scan(analysedDataModel.scan_count);
-
     }
 
     private void scan(final int scansCount) {
@@ -420,7 +419,7 @@ public class TestResultsActivity extends AppActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                FoodScanApplication.getDeviceHandler().setDevice(false,new com.ph7.foodscan.device.BluetoothDevice(device.getAddress(),deviceName), new DeviceConnectHandler() {
+                                FoodScanApplication.getDeviceHandler().setDevice(new com.ph7.foodscan.device.BluetoothDevice(device.getAddress(),deviceName), new DeviceConnectHandler() {
                                     @Override
                                     public void onConnect() {
                                         progressDialog.setMessage("Connected to "+deviceName);

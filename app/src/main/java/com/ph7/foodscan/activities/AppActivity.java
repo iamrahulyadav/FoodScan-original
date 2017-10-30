@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.SoundPool;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,7 +35,8 @@ import com.ph7.foodscan.R;
 import com.ph7.foodscan.activities.main.DiscoverDevicesActivity;
 import com.ph7.foodscan.activities.main.Help;
 import com.ph7.foodscan.activities.main.Settings;
-import com.ph7.foodscan.activities.onboarding.CPLoginActivity;
+
+import com.ph7.foodscan.activities.onboarding.ConnectScannerActivity;
 import com.ph7.foodscan.activities.onboarding.FoodScanLoginActivity;
 import com.ph7.foodscan.activities.onboarding.StartUpActivity;
 import com.ph7.foodscan.application.FoodScanApplication;
@@ -41,6 +44,7 @@ import com.ph7.foodscan.callbacks.DeviceConnectHandler;
 import com.ph7.foodscan.callbacks.ExceptionHandler;
 import com.ph7.foodscan.device.interfaces.DeviceHandlerInterface;
 import com.ph7.foodscan.services.SessionService;
+import com.ph7.foodscan.utils.Validation;
 import com.ph7.foodscan.views.BatteryView;
 
 import java.text.SimpleDateFormat;
@@ -109,7 +113,9 @@ public class AppActivity extends AppCompatActivity  {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     //Starting the full process, so connect a scanner first
-                    startActivity(new Intent(AppActivity.this, CPLoginActivity.class));
+                    startActivity(new Intent(AppActivity.this, ConnectScannerActivity.class));//Changed By Muhib on 30/10/2017
+
+                  //  startActivity(new Intent(AppActivity.this, CPLoginActivity.class));
                     dialogInterface.dismiss();
                 }
             });
@@ -162,7 +168,7 @@ public class AppActivity extends AppCompatActivity  {
                 finish();
                 break;
             case R.id.action_login:
-                startActivity(new Intent(AppActivity.this,CPLoginActivity.class)) ;
+                startActivity(new Intent(AppActivity.this,ConnectScannerActivity.class)) ;//Changed By Muhib on 30/10/2017
                 finish();
                 break;
 
@@ -262,6 +268,34 @@ public class AppActivity extends AppCompatActivity  {
             }
 
         }
+
+
+        // Network Connectivity
+        RelativeLayout buttonNetworkConnect = (RelativeLayout) findViewById(R.id.buttonNetworkConnect) ;
+
+        ImageView ivNWConnectivityStatus =  (ImageView)buttonNetworkConnect.findViewById(R.id.ivNWConnectivityStatus) ;
+        TextView tvNWConnectivityStatus =  (TextView)buttonNetworkConnect.findViewById(R.id.tvNWConnectivityStatus) ;
+
+        /*
+        *******************************************************************
+        * UPDATE BACKEND DATABASE CONNECTIVITY STATUS ON REFRESH GUI
+        * *****************************************************************
+        * ***/
+
+        if(!sessionService.isExpireAccessToken() && Validation.isOnline(_this))
+        {
+            buttonNetworkConnect.setVisibility(View.VISIBLE);
+            tvNWConnectivityStatus.setText("Connected");
+            ivNWConnectivityStatus.setBackground(getResources().getDrawable(R.drawable.icon_bluetooth_status_green));
+        }
+        else{
+            buttonNetworkConnect.setVisibility(View.VISIBLE);
+            tvNWConnectivityStatus.setText("Reconnect");
+            ivNWConnectivityStatus.setBackground(getResources().getDrawable(R.drawable.icon_bluetooth_status_red));
+            //reconnectToFoodScanDB();
+        }
+
+        /*********************/
     }
 
     public BroadcastReceiver networkReceiver = new BroadcastReceiver() {
@@ -275,11 +309,10 @@ public class AppActivity extends AppCompatActivity  {
                     Log.d("AppActivity : deviceId",device.getAddress());
                     if(device.getAddress().equals(sessionService.getScioDeviceId()))
                     {
-
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                FoodScanApplication.getDeviceHandler().setDevice(false,new com.ph7.foodscan.device.BluetoothDevice(device.getAddress(),deviceName), new DeviceConnectHandler() {
+                                FoodScanApplication.getDeviceHandler().setDevice(new com.ph7.foodscan.device.BluetoothDevice(device.getAddress(),deviceName), new DeviceConnectHandler() {
                                     @Override
                                     public void onConnect() { configureView();}
                                     @Override
@@ -291,12 +324,14 @@ public class AppActivity extends AppCompatActivity  {
                                 });
                             }
                         });
-
                     }
 
                 }
                 else { Log.d("MyTag", "device.getName() is null");}
+            }else if(ConnectivityManager.CONNECTIVITY_ACTION.equals(action)){
+                configureView();
             }
+
             if(intent.getExtras()!=null) {
                 new Handler().postDelayed(new Runnable() {
                     @Override

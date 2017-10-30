@@ -9,6 +9,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import com.ph7.foodscan.R;
 import com.ph7.foodscan.activities.AppActivity;
 import com.ph7.foodscan.activities.main.DashboardActivity;
 import com.ph7.foodscan.activities.main.DiscoverDevicesActivity;
+import com.ph7.foodscan.services.SessionService;
 import com.ph7.foodscan.utils.Validation;
 
 /**
@@ -27,12 +30,15 @@ import com.ph7.foodscan.utils.Validation;
  * @since   2016-07-04
  */
 public class ConnectScannerActivity extends AppActivity {
-
+    RadioGroup rg_usergroup;
+    RadioButton bt_user;
     int countFoundDevices = 0 ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_scanner);
+        rg_usergroup= (RadioGroup) findViewById(R.id.rg_user);
+
         setActionBarHidden(true);
 
         //throw new NullPointerException();
@@ -48,7 +54,21 @@ public class ConnectScannerActivity extends AppActivity {
     public void onSkipClicked(View view) {
         Log.d("ConnectScanner", "Skip Clicked");
         if(Validation.isNetworkConnected(this))  {
-            startActivity(new Intent(this, CPLoginActivity.class));
+            int SelectedId=rg_usergroup.getCheckedRadioButtonId();
+            if(SelectedId>0) {
+                bt_user = (RadioButton) findViewById(SelectedId);
+                String use= String.valueOf(bt_user.getText());
+                startActivity(new Intent(this, CPLoginActivity.class));
+                new SessionService().setuserpref(use);
+                Log.d("Type of User",use);
+             //   Toast.makeText(ConnectScannerActivity.this, bt_user.getText(), Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(ConnectScannerActivity.this, "Please Select User First", Toast.LENGTH_SHORT).show();
+
+            }
+            //startActivity(new Intent(this, CPLoginActivity.class));
         }
         else Toast.makeText(ConnectScannerActivity.this, "No network connectivity!!", Toast.LENGTH_SHORT).show();
 

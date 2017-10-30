@@ -10,10 +10,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,7 +31,8 @@ import java.io.InputStream;
 public class StatusView extends LinearLayout {
 
     private ImageView statusImage ;
-    private TextView tvStatusMsg ;
+    //private Button btstatus ;
+    private TextView tvStatusMsg,btstatus ;
     private GifDecoderView gifDecoderView ;
     private int statusCode ;
     private static boolean  isStatusOpen = false ;
@@ -60,6 +63,7 @@ public class StatusView extends LinearLayout {
     private void init()
     {
         statusImage = new ImageView(getContext());
+        btstatus=new TextView(getContext());
         /*****************/
         InputStream stream = null;
         try {
@@ -74,6 +78,8 @@ public class StatusView extends LinearLayout {
         this.addView(statusImage);
         this.addView(gifDecoderView);
         this.addView(tvStatusMsg);
+        this.addView(btstatus);
+
 
         setStatusCode(statusCode);
         setStatusMessage(statusMsg);
@@ -168,7 +174,10 @@ public class StatusView extends LinearLayout {
      * Status.SUCCESS
      * Status.FAILURE
      * *******************/
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(int statusCode)
+    {
+        LinearLayout.LayoutParams llp=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        llp.setMargins(0,45,0,0);
         if(myAnim!=null)
         {
             myAnim.cancel();
@@ -182,7 +191,16 @@ public class StatusView extends LinearLayout {
                 gifDecoderView.setVisibility(GONE);
                 statusImage.setVisibility(VISIBLE);
                 statusImage.setImageResource(R.drawable.success);
-                //  setBackgroundColor(Color.parseColor("#b23daf64"));
+                btstatus.setVisibility(VISIBLE);
+                btstatus.setText("Continue");
+                btstatus.setTextColor(Color.parseColor("#008e32"));
+                btstatus.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                 btstatus.setPadding(55,30,55,30);
+                btstatus.setTextSize(18.0f);
+                btstatus.setTypeface(null, Typeface.BOLD);
+                btstatus.setLayoutParams(llp);
+                //  setBackgroundColor(Color
+                // .parseColor("#b23daf64"));
                 setBackgroundColor(Color.TRANSPARENT);
                 break ;
 
@@ -190,18 +208,30 @@ public class StatusView extends LinearLayout {
                 gifDecoderView.setVisibility(GONE);
                 statusImage.setVisibility(VISIBLE);
                 statusImage.setImageResource(R.drawable.failure);
+                btstatus.setVisibility(VISIBLE);
+                btstatus.setText("Continue");
+                btstatus.setTextColor(Color.parseColor("#008e32"));
+                btstatus.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                btstatus.setPadding(55,30,55,30);
+                btstatus.setTextSize(18.0f);
+                btstatus.setTypeface(null, Typeface.BOLD);
+                btstatus.setLayoutParams(llp);
+
+
                 // setBackgroundColor(Color.parseColor("#b2c0181c"));
                 setBackgroundColor(Color.TRANSPARENT);
                 break ;
 
             case StatusType.SCANNING :
                 statusImage.setVisibility(GONE);
+                btstatus.setVisibility(GONE);
                 gifDecoderView.setVisibility(VISIBLE);
                 setBackgroundColor(Color.TRANSPARENT);
                 break ;
 
             case StatusType.ANALYZING :
                 statusImage.setVisibility(VISIBLE);
+                btstatus.setVisibility(GONE);
                 gifDecoderView.setVisibility(GONE);
                 statusImage.setImageResource(R.drawable.hax);
                 myAnim = AnimationUtils.loadAnimation(getContext(), R.anim.pumping);

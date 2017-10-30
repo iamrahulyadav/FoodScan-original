@@ -58,8 +58,5 @@ public class DashboardActivity extends AppActivity {
                 newTestFragment.refresh();
             }
         }
-
     }
-
-
 }

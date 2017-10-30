@@ -43,7 +43,7 @@ public class DeviceHandler implements DeviceHandlerInterface {
     }
     public void setDevice(boolean isAutoConnect ,BluetoothDevice bluetoothDevice, final DeviceConnectHandler handler) {
         this.bluetoothDevice = bluetoothDevice;
-        this.connectToDevice(isAutoConnect,handler);
+       // this.connectToDevice(isAutoConnect,handler);
     }
 
 
@@ -84,28 +84,28 @@ public class DeviceHandler implements DeviceHandlerInterface {
         });
     }
 
-    public void connectToDevice(boolean isAutoConnect ,final DeviceConnectHandler handler) {
-        this.scioDevice = new ScioDevice(FoodScanApplication.getAppContext(), this.bluetoothDevice.getAddress());
-        this.scioDevice.connect(isAutoConnect,new ScioDeviceConnectHandler() {
-            @Override
-            public void onConnected() {
-                handler.onConnect();
-            }
-
-            @Override
-            public void onConnectFailed() {
-                Log.d(TAG, "Connection failed");
-                handler.onFailed("Connection failed!");
-                //
-            }
-
-            @Override
-            public void onTimeout() {
-                Log.d(TAG, "Connection timed out");
-                handler.onFailed("Connection timed out");
-            }
-        });
-    }
+//    public void connectToDevice(boolean isAutoConnect ,final DeviceConnectHandler handler) {
+//        this.scioDevice = new ScioDevice(FoodScanApplication.getAppContext(), this.bluetoothDevice.getAddress());
+//        this.scioDevice.connect(isAutoConnect,new ScioDeviceConnectHandler() {
+//            @Override
+//            public void onConnected() {
+//                handler.onConnect();
+//            }
+//
+//            @Override
+//            public void onConnectFailed() {
+//                Log.d(TAG, "Connection failed");
+//                handler.onFailed("Connection failed!");
+//                //
+//            }
+//
+//            @Override
+//            public void onTimeout() {
+//                Log.d(TAG, "Connection timed out");
+//                handler.onFailed("Connection timed out");
+//            }
+//        });
+//    }
 
 
     public void scan(final ScioDeviceScanHandler handler) {
