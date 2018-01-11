@@ -34,6 +34,7 @@ import com.consumerphysics.android.sdk.sciosdk.ScioCloud;
 import com.ph7.foodscan.R;
 import com.ph7.foodscan.activities.main.DiscoverDevicesActivity;
 import com.ph7.foodscan.activities.main.Help;
+import com.ph7.foodscan.activities.main.ModelInstallationActivity;
 import com.ph7.foodscan.activities.main.Settings;
 
 import com.ph7.foodscan.activities.onboarding.ConnectScannerActivity;
@@ -167,6 +168,9 @@ public class AppActivity extends AppCompatActivity  {
             case android.R.id.home:
                 finish();
                 break;
+            case R.id.action_model_installation:
+                startActivity(new Intent(this, ModelInstallationActivity.class)); /*changed by rakhi on 30/11.2017 */
+                break;
             case R.id.action_login:
                 startActivity(new Intent(AppActivity.this,ConnectScannerActivity.class)) ;//Changed By Muhib on 30/10/2017
                 finish();
@@ -180,14 +184,11 @@ public class AppActivity extends AppCompatActivity  {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.ph-7.co.uk/privacy/"));
                 startActivity(browserIntent);
                 break;
-
             default:
                 break;
         }
-
         return true;
     }
-
 
     public void configureView(){
         final AppActivity _this = this;
@@ -201,8 +202,10 @@ public class AppActivity extends AppCompatActivity  {
                 {
                     TextView tvDeviceName = (TextView)view.findViewById(R.id.tvDeviceName);
                     tvDeviceName.setText("Connecting...");
-                    if(sessionService.getScioDeviceId()!=null && !sessionService.getScioDeviceId().isEmpty()) checkBluetoothPermissions();
-                    else startActivityForResult(new Intent(_this, DiscoverDevicesActivity.class), DiscoverDevicesActivity.PICK_DEVICE_REQUEST);
+                    if(sessionService.getScioDeviceId()!=null && !sessionService.getScioDeviceId().isEmpty())
+                        checkBluetoothPermissions();
+                    else startActivityForResult(new Intent(_this, DiscoverDevicesActivity.class),
+                            DiscoverDevicesActivity.PICK_DEVICE_REQUEST);
                 }
             }
         });
@@ -237,15 +240,12 @@ public class AppActivity extends AppCompatActivity  {
                 }
             });
 
-
             tvDeviceName.setText(deviceHandler.getDeviceName());
 
             if(deviceHandler.isCalibrationNeeded())
                 ivBluetoothStatus.setBackground(getResources().getDrawable(R.drawable.icon_bluetooth_status_yellow));
             else
                 ivBluetoothStatus.setBackground(getResources().getDrawable(R.drawable.icon_bluetooth_status_green));
-
-
         }
         else
         {
@@ -266,9 +266,7 @@ public class AppActivity extends AppCompatActivity  {
                     ivBluetoothStatus.setBackground(getResources().getDrawable(R.drawable.icon_bluetooth_status_red));
                 }
             }
-
         }
-
 
         // Network Connectivity
         RelativeLayout buttonNetworkConnect = (RelativeLayout) findViewById(R.id.buttonNetworkConnect) ;
@@ -282,7 +280,7 @@ public class AppActivity extends AppCompatActivity  {
         * *****************************************************************
         * ***/
 
-        if(!sessionService.isExpireAccessToken() && Validation.isOnline(_this))
+        if(!sessionService.isExpireAccessToken() || Validation.isOnline(_this))
         {
             buttonNetworkConnect.setVisibility(View.VISIBLE);
             tvNWConnectivityStatus.setText("Connected");
@@ -325,13 +323,11 @@ public class AppActivity extends AppCompatActivity  {
                             }
                         });
                     }
-
                 }
                 else { Log.d("MyTag", "device.getName() is null");}
             }else if(ConnectivityManager.CONNECTIVITY_ACTION.equals(action)){
                 configureView();
             }
-
             if(intent.getExtras()!=null) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -340,8 +336,6 @@ public class AppActivity extends AppCompatActivity  {
             }
         }
     };
-
-
 
     // Setup Sound Pool
     protected int soundId ;
@@ -372,7 +366,6 @@ public class AppActivity extends AppCompatActivity  {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 
     public void checkBluetoothPermissions() {
         // Check if the Bluetooth permission has been granted
@@ -413,7 +406,6 @@ public class AppActivity extends AppCompatActivity  {
             }
             if (allPermissionsGranted) {
                 // Permission has been granted. Start camera preview Activity.
-
                 scanningDevices();
             } else {
                 // Permission request was denied.

@@ -73,7 +73,6 @@ public class ScanningService {
                                 new TimerTask() {
                                     @Override
                                     public void run() {
-
                                         nextScan();
                                     }
                                 },

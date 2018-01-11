@@ -22,6 +22,10 @@
         android:title="@string/reset_bt">
     </item>
     <item
+        android:id="@+id/action_model_installation"
+        android:title="@string/model_installation">
+    </item>
+    <item
         android:id="@+id/action_logout"
         android:title="@string/logout">
     </item>

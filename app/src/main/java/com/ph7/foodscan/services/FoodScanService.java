@@ -56,11 +56,12 @@ public class FoodScanService implements FoodScanServiceInterface {
                 {
                     this.serverURL = new URL("https://apitest.foodscan.co.uk");
                 }
+            } else {
+                this.serverURL = new URL("https://apitest.foodscan.co.uk");
             }
          //   this.serverURL = new URL("https://api.foodscan.co.uk");
           //  this.serverURL = new URL("https://apitest.foodscan.co.uk");/*For Testing Environment*/
         } catch (MalformedURLException e) {
-
         }
     }
 

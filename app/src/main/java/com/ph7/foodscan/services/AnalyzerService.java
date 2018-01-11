@@ -33,7 +33,6 @@ public class AnalyzerService implements AnalyzerInterface {
         this.scioCloud = new ScioCloud(FoodScanApplication.getAppContext());
     }
 
-
     //Not used
     public void analyze(ScioReading scioReading, final ScioCollectionModel model, final ScioCloudAnalyzeCallback callback) {
         this.scioCloud.analyze(scioReading, model.getUuid(), new com.consumerphysics.android.sdk.callback.cloud.ScioCloudAnalyzeCallback() {
@@ -52,11 +51,11 @@ public class AnalyzerService implements AnalyzerInterface {
 
 // not Used
     @Override
-    public void analyze(final List<ScioReading> scioReadings, final ScioCollectionModel model, final ScioCloudAnalyzeManyCallback callback) {
+    public void analyze(final List<ScioReading> scioReadings, final ScioCollectionModel model,
+                        final ScioCloudAnalyzeManyCallback callback) {
 
         final Map<ScioReading, Model> lookup = new HashMap<>();
         analyzeCount = 0;
-
 
         for (final ScioReading scioReading : scioReadings) {
             this.analyze(scioReading, model, new ScioCloudAnalyzeCallback() {
@@ -69,7 +68,6 @@ public class AnalyzerService implements AnalyzerInterface {
                         returnModel = lookup.get(scioReading);
                         returnModel.addAttributes(scioModel.getAttributes());
                     }
-
                     lookup.put(scioReading, returnModel);
                     analyzeCount++;
                     if (analyzeCount == scioReadings.size()) {
@@ -89,7 +87,8 @@ public class AnalyzerService implements AnalyzerInterface {
 
     // Not Using
     @Override
-    public void analyze(final List<ScioReading> scioReadings, final List<ScioCollectionModel> models, ScioCloudAnalyzeManyCallback callback) {
+    public void analyze(final List<ScioReading> scioReadings, final List<ScioCollectionModel> models,
+                        ScioCloudAnalyzeManyCallback callback) {
         modelsLookups.clear();
         analyzeCount = scioReadings.size() ;
         this.callBackLookup  =  callback ;
@@ -108,7 +107,6 @@ public class AnalyzerService implements AnalyzerInterface {
             });
         }
     }
-
 
     // Latest this is Using
     HashMap<String,String> modelMapping  = new HashMap<>();
@@ -157,7 +155,8 @@ public class AnalyzerService implements AnalyzerInterface {
     // Latest that is using
     final Map<ScioReading, HashSet<Model>> modelSetLookups = new HashMap<>();
     @Override
-    public void analyze(List<ScioReading> scioReadings, List<ScioCollectionModel> models, ScioCloudAnalyzeManyModelCallback callback) {
+    public void analyze(List<ScioReading> scioReadings, List<ScioCollectionModel> models,
+                        ScioCloudAnalyzeManyModelCallback callback) {
         modelSetLookups.clear();
         analyzeCount = scioReadings.size() ;
         this.callBackModelSetLookup  =  callback ;

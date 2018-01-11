@@ -167,7 +167,6 @@ public class NewTestActivity extends AppActivity {
             return ;
         }
 
-
         progressBarCollection.setVisibility(View.VISIBLE);
 
         //get Collection n=and model from CP server for Specific User login
@@ -304,7 +303,6 @@ public class NewTestActivity extends AppActivity {
 
             }
         });
-
     }
 
     @Override
@@ -349,6 +347,7 @@ public class NewTestActivity extends AppActivity {
             }
         });
     }
+
     private void getSelectedModels() {
         multipleModels.clear();
         if(modelList.getSelectedItemPosition()>0)
@@ -363,7 +362,6 @@ public class NewTestActivity extends AppActivity {
             {
                 multipleModels.add((ScioCollectionModel) spinner.getSelectedItem());
             }
-
         }
 
     }
@@ -459,7 +457,6 @@ public class NewTestActivity extends AppActivity {
                                 startActivity(intent);
                             }
                         });
-
                     }
                 });
             }

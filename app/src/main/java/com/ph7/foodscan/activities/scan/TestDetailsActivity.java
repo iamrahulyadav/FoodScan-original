@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Adapter;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -98,7 +99,8 @@ import java.util.Map;
  * @version 0.7
  * @since   2016-07-04
  */
-public class TestDetailsActivity extends AppActivity  implements GoogleApiClient.ConnectionCallbacks , GoogleApiClient.OnConnectionFailedListener{
+public class TestDetailsActivity extends AppActivity  implements GoogleApiClient.ConnectionCallbacks ,
+        GoogleApiClient.OnConnectionFailedListener{
 
     int addImagesLimit = 0 ;
     private int  scans ;
@@ -846,8 +848,6 @@ public class TestDetailsActivity extends AppActivity  implements GoogleApiClient
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         startActivityForResult(intent, PICK_Camera_IMAGE);
-
-
     }
 
 

@@ -39,7 +39,8 @@ public class DashboardActivity extends AppActivity {
 
             @Override
             public void onNeedsDevice() {
-                startActivityForResult(new Intent(_this, DiscoverDevicesActivity.class), DiscoverDevicesActivity.PICK_DEVICE_REQUEST);
+                startActivityForResult(new Intent(_this, DiscoverDevicesActivity.class),
+                        DiscoverDevicesActivity.PICK_DEVICE_REQUEST);
             }
         };
     }

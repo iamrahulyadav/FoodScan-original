@@ -1,6 +1,7 @@
 package com.ph7.foodscan.activities.main;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -106,10 +107,7 @@ public class DiscoverDevicesActivity extends AppActivity {
         //Stop previous service
         stopService(new Intent(this, SCiOBLeService.class));
 
-
-
     }
-
 
     private void checkIfSystemHasBluetooth() {
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -226,7 +224,7 @@ public class DiscoverDevicesActivity extends AppActivity {
 
         this.handler = new Handler();
 
-        final BluetoothManager bluetoothManager =
+        @SuppressLint("WrongConstant") final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         this.bluetoothAdapter = bluetoothManager.getAdapter();
 

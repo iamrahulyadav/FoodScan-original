@@ -20,7 +20,6 @@ public class FoodScanApplication extends MultiDexApplication {
 
     private static DeviceHandlerInterface deviceHandler;
     private static AnalyzerInterface analyzerService;
-
     private static Locale locale;
 
     public void onCreate() {

@@ -104,7 +104,8 @@ public class FCDBService extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateTestScanToAnalyse(String test_id,String content,String model_ids, String collection_id,String create_datetime,String timestamp)
+    public boolean updateTestScanToAnalyse(String test_id,String content,String model_ids, String collection_id,
+                                           String create_datetime,String timestamp)
     {
         try {
 

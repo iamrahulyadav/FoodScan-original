@@ -15,8 +15,6 @@
         android:layout_height="wrap_content"
         android:src="@drawable/icon_bluetooth_list"/>
 
-
-
     <TextView
         android:layout_toEndOf="@+id/ivBluetooth"
         android:layout_toStartOf="@+id/progressBar"

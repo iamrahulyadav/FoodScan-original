@@ -326,7 +326,6 @@ public class StartNewTestFragment extends Fragment {
                 tvCalibrationStatus.setText("Recalibrate");
                 ivCalibrateGraphic.setBackground(getResources().getDrawable(R.drawable.graphic_refresh_purple));
             }
-
             tvDeviceName.setText(deviceHandler.getDeviceName());
 
             if(deviceHandler.isCalibrationNeeded()) ivBluetoothStatus.setBackground(getResources().getDrawable(R.drawable.icon_bluetooth_status_yellow));
@@ -374,7 +373,7 @@ public class StartNewTestFragment extends Fragment {
         * *****************************************************************
         * ***/
 
-        if(!sessionService.isExpireAccessToken() && Validation.isOnline(getActivity()))
+        if(!sessionService.isExpireAccessToken() || Validation.isOnline(getActivity()))
         {
             networkConnectCont.setVisibility(View.VISIBLE);
             tvNWConnectivityStatus.setText("Connected");
@@ -391,15 +390,14 @@ public class StartNewTestFragment extends Fragment {
 
     }
 
-
     private void setSavedScanResult(View view) {
 
         FCDBService fcdbService = new FCDBService(getActivity());
         Cursor testsCursor =  fcdbService.getAllTests() ;
         int analysedCount =  0 ;
         int notAnalysedCount = 0 ;
-        listAnalysedData = new ArrayList<>() ;
-        listNotAnalysedData= new ArrayList<>() ;
+        listAnalysedData = new ArrayList<>();
+        listNotAnalysedData= new ArrayList<>();
         try
         {
             testsCursor.moveToFirst();
@@ -413,7 +411,6 @@ public class StartNewTestFragment extends Fragment {
                 }
                 testsCursor.moveToNext();
             }
-
         }catch(Exception x)
         {
             x.printStackTrace();
@@ -423,15 +420,11 @@ public class StartNewTestFragment extends Fragment {
             if(fcdbService!=null) fcdbService.close();
         }
 
-
         TextView tvNotAnalysedTestCount  =  (TextView)  view.findViewById(R.id.tvNotAnalysedTestCount);
         TextView tvAnalysedTestCount  =  (TextView)  view.findViewById(R.id.tvAnalysedTestCount);
-
         tvNotAnalysedTestCount.setText(notAnalysedCount+"");
-
         tvAnalysedTestCount.setText(analysedCount+"");
     }
-
 
     private void reconnectToFoodScanDB() {
         if(!Validation.isOnline(getActivity())) {
@@ -443,7 +436,6 @@ public class StartNewTestFragment extends Fragment {
                 regenerateTokenRequest();
         }
     }
-
 
     private void regenerateTokenRequest() {
         Log.d("Token","Regenerate token request");
@@ -465,6 +457,7 @@ public class StartNewTestFragment extends Fragment {
             }
         });
     }
+
     AlertDialog alertDialog;
     private void showSettingsPopup() {
         if(alertDialog==null || !alertDialog.isShowing()) {
@@ -533,8 +526,8 @@ public class StartNewTestFragment extends Fragment {
                     }
                 });
             }
-
         });
+
     }
 
 
